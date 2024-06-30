@@ -1,0 +1,3 @@
+package com.lukinhasssss.assinatura
+
+class IntegrationTestConfiguration

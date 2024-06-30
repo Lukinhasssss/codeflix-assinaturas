@@ -1,0 +1,15 @@
+object Version {
+    const val PROJECT = "1.0.0"
+    const val KOTLIN = "2.0.0"
+    const val DETEKT = "1.23.6"
+    const val KTLINT = "12.1.1"
+    const val JACOCO = "0.8.11"
+    const val SONARQUBE = "5.0.0.4638"
+    const val SPRING_BOOT = "3.3.1"
+    const val SPRING_DEPENDENCY_MANAGEMENT = "1.1.4"
+    const val KOTEST = "5.9.1"
+    const val TEST_CONTAINERS = "1.19.8"
+    const val VAVR = "0.10.2"
+    const val OPEN_API = "1.8.0"
+    const val GATLING = "3.9.3.1"
+}
