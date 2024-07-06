@@ -6,7 +6,7 @@ data class Address(
     val zipCode: String,
     val number: String,
     val complement: String = "",
-    val country: String
+    val country: String,
 ) : ValueObject {
     init {
         assertArgumentNotEmpty(zipCode, "'zipCode' should not be empty")

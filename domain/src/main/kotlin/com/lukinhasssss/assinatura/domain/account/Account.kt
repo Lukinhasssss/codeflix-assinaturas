@@ -13,9 +13,8 @@ class Account private constructor(
     var name: Name,
     var email: Email,
     var document: Document,
-    val billingAddress: Address? = null
+    val billingAddress: Address? = null,
 ) : AggregateRoot<AccountId>(accountId) {
-
     init {
         userId = assertArgumentNotNull(userId, "'userId' should not be null")
         email = assertArgumentNotNull(email, "'email' should not be null")
@@ -30,8 +29,7 @@ class Account private constructor(
             aName: Name,
             anEmail: Email,
             aDocument: Document,
-        ): Account =
-            Account(accountId = anAccountId, userId = anUserId, name = aName, email = anEmail, document = aDocument)
+        ): Account = Account(accountId = anAccountId, userId = anUserId, name = aName, email = anEmail, document = aDocument)
 
         fun with(
             anAccountId: AccountId,
@@ -40,7 +38,7 @@ class Account private constructor(
             aName: Name,
             anEmail: Email,
             aDocument: Document,
-            billingAddress: Address? = null
+            billingAddress: Address? = null,
         ): Account =
             Account(
                 accountId = anAccountId,
@@ -49,7 +47,7 @@ class Account private constructor(
                 name = aName,
                 email = anEmail,
                 document = aDocument,
-                billingAddress = billingAddress
+                billingAddress = billingAddress,
             )
     }
 }

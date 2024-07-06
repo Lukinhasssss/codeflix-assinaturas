@@ -1,7 +1,6 @@
 package com.lukinhasssss.admin.catalogo.domain.event
 
 import com.lukinhasssss.assinatura.domain.AssertionConcern
-import java.io.Serializable
 import java.time.Instant
 
 interface DomainEvent : AssertionConcern {

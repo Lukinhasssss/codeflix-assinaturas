@@ -13,7 +13,6 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 
 class AccountTest : UnitTest {
-
     @Test
     fun `Given a new account, when calls new account, should instantiate`() {
         // given
@@ -25,13 +24,14 @@ class AccountTest : UnitTest {
         val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
 
         // when
-        val actualAccount = Account.newAccount(
-            anAccountId = expectedId,
-            anUserId = expectedUserId,
-            aName = expectedName,
-            anEmail = expectedEmail,
-            aDocument = expectedDocument
-        )
+        val actualAccount =
+            Account.newAccount(
+                anAccountId = expectedId,
+                anUserId = expectedUserId,
+                aName = expectedName,
+                anEmail = expectedEmail,
+                aDocument = expectedDocument,
+            )
 
         // then
         with(actualAccount) {
@@ -56,7 +56,9 @@ class AccountTest : UnitTest {
         val expectedAddress = Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
 
         // when - then
-        assertDoesNotThrow { Account.with(expectedId, expectedVersion, expectedUserId, expectedName, expectedEmail, expectedDocument, expectedAddress) }
+        assertDoesNotThrow {
+            Account.with(expectedId, expectedVersion, expectedUserId, expectedName, expectedEmail, expectedDocument, expectedAddress)
+        }
     }
 
     @Test
@@ -69,14 +71,15 @@ class AccountTest : UnitTest {
         val expectedEmail = Email("john@gmail.com")
 
         // when
-        val actualAccount = Account.with(
-            anAccountId = expectedId,
-            version = expectedVersion,
-            anUserId = expectedUserId,
-            aName = expectedName,
-            anEmail = expectedEmail,
-            aDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
-        )
+        val actualAccount =
+            Account.with(
+                anAccountId = expectedId,
+                version = expectedVersion,
+                anUserId = expectedUserId,
+                aName = expectedName,
+                anEmail = expectedEmail,
+                aDocument = Document.create(documentType = "cpf", documentNumber = "12345678912"),
+            )
 
         // then
         with(actualAccount) {
@@ -102,17 +105,18 @@ class AccountTest : UnitTest {
             Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
 
         // when
-        val actualError = assertThrows<DomainException> {
-            Account.with(
-                anAccountId = AccountId(expectedId),
-                version = expectedVersion,
-                anUserId = expectedUserId,
-                aName = expectedName,
-                anEmail = expectedEmail,
-                aDocument = expectedDocument,
-                billingAddress = expectedAddress
-            )
-        }
+        val actualError =
+            assertThrows<DomainException> {
+                Account.with(
+                    anAccountId = AccountId(expectedId),
+                    version = expectedVersion,
+                    anUserId = expectedUserId,
+                    aName = expectedName,
+                    anEmail = expectedEmail,
+                    aDocument = expectedDocument,
+                    billingAddress = expectedAddress,
+                )
+            }
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)
@@ -132,17 +136,18 @@ class AccountTest : UnitTest {
             Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
 
         // when
-        val actualError = assertThrows<DomainException> {
-            Account.with(
-                anAccountId = expectedId,
-                version = expectedVersion,
-                anUserId = UserId(expectedUserId),
-                aName = expectedName,
-                anEmail = expectedEmail,
-                aDocument = expectedDocument,
-                billingAddress = expectedAddress
-            )
-        }
+        val actualError =
+            assertThrows<DomainException> {
+                Account.with(
+                    anAccountId = expectedId,
+                    version = expectedVersion,
+                    anUserId = UserId(expectedUserId),
+                    aName = expectedName,
+                    anEmail = expectedEmail,
+                    aDocument = expectedDocument,
+                    billingAddress = expectedAddress,
+                )
+            }
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)
@@ -161,17 +166,18 @@ class AccountTest : UnitTest {
             Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
 
         // when
-        val actualError = assertThrows<DomainException> {
-            Account.with(
-                anAccountId = expectedId,
-                version = expectedVersion,
-                anUserId = expectedUserId,
-                aName = Name(firstName = "", lastName = "lastName"),
-                anEmail = expectedEmail,
-                aDocument = expectedDocument,
-                billingAddress = expectedAddress
-            )
-        }
+        val actualError =
+            assertThrows<DomainException> {
+                Account.with(
+                    anAccountId = expectedId,
+                    version = expectedVersion,
+                    anUserId = expectedUserId,
+                    aName = Name(firstName = "", lastName = "lastName"),
+                    anEmail = expectedEmail,
+                    aDocument = expectedDocument,
+                    billingAddress = expectedAddress,
+                )
+            }
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)
@@ -190,17 +196,18 @@ class AccountTest : UnitTest {
             Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
 
         // when
-        val actualError = assertThrows<DomainException> {
-            Account.with(
-                anAccountId = expectedId,
-                version = expectedVersion,
-                anUserId = expectedUserId,
-                aName = Name(firstName = "John", lastName = ""),
-                anEmail = expectedEmail,
-                aDocument = expectedDocument,
-                billingAddress = expectedAddress
-            )
-        }
+        val actualError =
+            assertThrows<DomainException> {
+                Account.with(
+                    anAccountId = expectedId,
+                    version = expectedVersion,
+                    anUserId = expectedUserId,
+                    aName = Name(firstName = "John", lastName = ""),
+                    anEmail = expectedEmail,
+                    aDocument = expectedDocument,
+                    billingAddress = expectedAddress,
+                )
+            }
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)
@@ -219,17 +226,18 @@ class AccountTest : UnitTest {
             Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
 
         // when
-        val actualError = assertThrows<DomainException> {
-            Account.with(
-                anAccountId = expectedId,
-                version = expectedVersion,
-                anUserId = expectedUserId,
-                aName = expectedName,
-                anEmail = Email(""),
-                aDocument = expectedDocument,
-                billingAddress = expectedAddress
-            )
-        }
+        val actualError =
+            assertThrows<DomainException> {
+                Account.with(
+                    anAccountId = expectedId,
+                    version = expectedVersion,
+                    anUserId = expectedUserId,
+                    aName = expectedName,
+                    anEmail = Email(""),
+                    aDocument = expectedDocument,
+                    billingAddress = expectedAddress,
+                )
+            }
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)
@@ -248,17 +256,18 @@ class AccountTest : UnitTest {
             Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
 
         // when
-        val actualError = assertThrows<DomainException> {
-            Account.with(
-                anAccountId = expectedId,
-                version = expectedVersion,
-                anUserId = expectedUserId,
-                aName = expectedName,
-                anEmail = expectedEmail,
-                aDocument = Document.create(documentType = "rg", documentNumber = ""),
-                billingAddress = expectedAddress
-            )
-        }
+        val actualError =
+            assertThrows<DomainException> {
+                Account.with(
+                    anAccountId = expectedId,
+                    version = expectedVersion,
+                    anUserId = expectedUserId,
+                    aName = expectedName,
+                    anEmail = expectedEmail,
+                    aDocument = Document.create(documentType = "rg", documentNumber = ""),
+                    billingAddress = expectedAddress,
+                )
+            }
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)
@@ -277,17 +286,18 @@ class AccountTest : UnitTest {
             Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
 
         // when
-        val actualError = assertThrows<DomainException> {
-            Account.with(
-                anAccountId = expectedId,
-                version = expectedVersion,
-                anUserId = expectedUserId,
-                aName = expectedName,
-                anEmail = expectedEmail,
-                aDocument = Document.create(documentType = "cpf", documentNumber = ""),
-                billingAddress = expectedAddress
-            )
-        }
+        val actualError =
+            assertThrows<DomainException> {
+                Account.with(
+                    anAccountId = expectedId,
+                    version = expectedVersion,
+                    anUserId = expectedUserId,
+                    aName = expectedName,
+                    anEmail = expectedEmail,
+                    aDocument = Document.create(documentType = "cpf", documentNumber = ""),
+                    billingAddress = expectedAddress,
+                )
+            }
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)
@@ -306,17 +316,18 @@ class AccountTest : UnitTest {
             Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
 
         // when
-        val actualError = assertThrows<DomainException> {
-            Account.with(
-                anAccountId = expectedId,
-                version = expectedVersion,
-                anUserId = expectedUserId,
-                aName = expectedName,
-                anEmail = expectedEmail,
-                aDocument = Document.create(documentType = "cpf", documentNumber = "12345678912345"),
-                billingAddress = expectedAddress
-            )
-        }
+        val actualError =
+            assertThrows<DomainException> {
+                Account.with(
+                    anAccountId = expectedId,
+                    version = expectedVersion,
+                    anUserId = expectedUserId,
+                    aName = expectedName,
+                    anEmail = expectedEmail,
+                    aDocument = Document.create(documentType = "cpf", documentNumber = "12345678912345"),
+                    billingAddress = expectedAddress,
+                )
+            }
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)
@@ -335,17 +346,18 @@ class AccountTest : UnitTest {
             Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
 
         // when
-        val actualError = assertThrows<DomainException> {
-            Account.with(
-                anAccountId = expectedId,
-                version = expectedVersion,
-                anUserId = expectedUserId,
-                aName = expectedName,
-                anEmail = expectedEmail,
-                aDocument = Document.create(documentType = "cnpj", documentNumber = ""),
-                billingAddress = expectedAddress
-            )
-        }
+        val actualError =
+            assertThrows<DomainException> {
+                Account.with(
+                    anAccountId = expectedId,
+                    version = expectedVersion,
+                    anUserId = expectedUserId,
+                    aName = expectedName,
+                    anEmail = expectedEmail,
+                    aDocument = Document.create(documentType = "cnpj", documentNumber = ""),
+                    billingAddress = expectedAddress,
+                )
+            }
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)
@@ -364,17 +376,18 @@ class AccountTest : UnitTest {
             Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
 
         // when
-        val actualError = assertThrows<DomainException> {
-            Account.with(
-                anAccountId = expectedId,
-                version = expectedVersion,
-                anUserId = expectedUserId,
-                aName = expectedName,
-                anEmail = expectedEmail,
-                aDocument = Document.create(documentType = "cnpj", documentNumber = "12345678912"),
-                billingAddress = expectedAddress
-            )
-        }
+        val actualError =
+            assertThrows<DomainException> {
+                Account.with(
+                    anAccountId = expectedId,
+                    version = expectedVersion,
+                    anUserId = expectedUserId,
+                    aName = expectedName,
+                    anEmail = expectedEmail,
+                    aDocument = Document.create(documentType = "cnpj", documentNumber = "12345678912"),
+                    billingAddress = expectedAddress,
+                )
+            }
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)

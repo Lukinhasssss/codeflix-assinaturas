@@ -5,7 +5,7 @@ import com.lukinhasssss.assinatura.domain.AssertionConcern
 
 abstract class Entity<ID : Identifier>(
     val id: ID,
-    val domainEvents: MutableList<DomainEvent> = mutableListOf()
+    val domainEvents: MutableList<DomainEvent> = mutableListOf(),
 ) : AssertionConcern {
     fun domainEvents(): List<DomainEvent> = domainEvents.toList()
 

@@ -8,7 +8,7 @@ interface Document : ValueObject {
 
     data class Cpf(
         override val type: String = TYPE,
-        override val value: String
+        override val value: String,
     ) : Document {
         init {
             assertArgumentNotEmpty(value, "'cpf' should not be empty")
@@ -22,7 +22,7 @@ interface Document : ValueObject {
 
     data class Cnpj(
         override val type: String = TYPE,
-        override val value: String
+        override val value: String,
     ) : Document {
         init {
             assertArgumentNotEmpty(value, "'cnpj' should not be empty")
@@ -38,7 +38,9 @@ interface Document : ValueObject {
         private const val CPF_LENGTH = 11
         private const val CNPJ_LENGTH = 14
 
-        fun create(documentType: String, documentNumber: String): Document =
-            DocumentFactory.create(documentType, documentNumber)
+        fun create(
+            documentType: String,
+            documentNumber: String,
+        ): Document = DocumentFactory.create(documentType, documentNumber)
     }
 }
