@@ -11,11 +11,11 @@ import com.lukinhasssss.assinatura.infrastructure.authentication.AuthenticationG
 import com.lukinhasssss.assinatura.infrastructure.authentication.AuthenticationGateway.RefreshTokenInput
 import com.lukinhasssss.assinatura.infrastructure.authentication.KeycloakAuthenticationGateway.KeycloakAuthenticationResult
 import com.lukinhasssss.assinatura.infrastructure.configuration.json.Json
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
-import kotlin.test.assertEquals
 
 class KeycloakAuthenticationGatewayTest : AbstractRestClientTest() {
     @Autowired
