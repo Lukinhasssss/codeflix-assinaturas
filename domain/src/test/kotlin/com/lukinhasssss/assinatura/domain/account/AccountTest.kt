@@ -1,8 +1,8 @@
 package com.lukinhasssss.assinatura.domain.account
 
+import com.lukinhasssss.assinatura.domain.Fixture
 import com.lukinhasssss.assinatura.domain.UnitTest
 import com.lukinhasssss.assinatura.domain.exception.DomainException
-import com.lukinhasssss.assinatura.domain.person.Address
 import com.lukinhasssss.assinatura.domain.person.Document
 import com.lukinhasssss.assinatura.domain.person.Email
 import com.lukinhasssss.assinatura.domain.person.Name
@@ -19,7 +19,7 @@ class AccountTest : UnitTest {
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 0
         val expectedUserId = UserId(" USER-123")
-        val expectedName = Name(firstName = "John", lastName = "Doe")
+        val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
 
@@ -50,10 +50,10 @@ class AccountTest : UnitTest {
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
         val expectedUserId = UserId(" USER-123")
-        val expectedName = Name(firstName = "John", lastName = "Doe")
+        val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
-        val expectedAddress = Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
+        val expectedAddress = Fixture.Person.fullAddress()
 
         // when - then
         assertDoesNotThrow {
@@ -67,7 +67,7 @@ class AccountTest : UnitTest {
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
         val expectedUserId = UserId(" USER-123")
-        val expectedName = Name(firstName = "John", lastName = "Doe")
+        val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
 
         // when
@@ -98,11 +98,10 @@ class AccountTest : UnitTest {
         val expectedId = ""
         val expectedVersion = 1
         val expectedUserId = UserId(" USER-123")
-        val expectedName = Name(firstName = "John", lastName = "Doe")
+        val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
-        val expectedAddress =
-            Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
+        val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
@@ -129,11 +128,10 @@ class AccountTest : UnitTest {
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
         val expectedUserId = ""
-        val expectedName = Name(firstName = "John", lastName = "Doe")
+        val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
-        val expectedAddress =
-            Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
+        val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
@@ -162,8 +160,7 @@ class AccountTest : UnitTest {
         val expectedUserId = UserId(" USER-123")
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
-        val expectedAddress =
-            Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
+        val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
@@ -192,8 +189,7 @@ class AccountTest : UnitTest {
         val expectedUserId = UserId(" USER-123")
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
-        val expectedAddress =
-            Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
+        val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
@@ -216,14 +212,13 @@ class AccountTest : UnitTest {
     @Test
     fun `Given an invalid email, when call with, should return error`() {
         // given
-        val expectedErrorMessage = "'email' should not be empty"
+        val expectedErrorMessage = "'email' should be a valid email"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
         val expectedUserId = UserId(" USER-123")
-        val expectedName = Name(firstName = "John", lastName = "Doe")
+        val expectedName = Fixture.Person.fullName()
         val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
-        val expectedAddress =
-            Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
+        val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
@@ -250,10 +245,9 @@ class AccountTest : UnitTest {
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
         val expectedUserId = UserId(" USER-123")
-        val expectedName = Name(firstName = "John", lastName = "Doe")
+        val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
-        val expectedAddress =
-            Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
+        val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
@@ -280,10 +274,9 @@ class AccountTest : UnitTest {
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
         val expectedUserId = UserId(" USER-123")
-        val expectedName = Name(firstName = "John", lastName = "Doe")
+        val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
-        val expectedAddress =
-            Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
+        val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
@@ -310,10 +303,9 @@ class AccountTest : UnitTest {
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
         val expectedUserId = UserId(" USER-123")
-        val expectedName = Name(firstName = "John", lastName = "Doe")
+        val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
-        val expectedAddress =
-            Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
+        val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
@@ -340,10 +332,9 @@ class AccountTest : UnitTest {
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
         val expectedUserId = UserId(" USER-123")
-        val expectedName = Name(firstName = "John", lastName = "Doe")
+        val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
-        val expectedAddress =
-            Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
+        val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
@@ -370,10 +361,9 @@ class AccountTest : UnitTest {
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
         val expectedUserId = UserId(" USER-123")
-        val expectedName = Name(firstName = "John", lastName = "Doe")
+        val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
-        val expectedAddress =
-            Address(zipCode = "09123123", number = "123", complement = "ap 123", country = "Brazil")
+        val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
