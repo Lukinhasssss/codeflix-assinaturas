@@ -17,3 +17,7 @@ tasks.withType<KotlinCompile> {
         jvmTarget = JavaVersion.VERSION_21.toString()
     }
 }
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
