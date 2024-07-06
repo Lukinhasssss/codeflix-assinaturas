@@ -33,4 +33,24 @@ interface AssertionConcern {
         }
         return value
     }
+
+    fun assertConditionTrue(
+        condition: Boolean,
+        aMessage: String,
+    ) {
+        if (!condition) {
+            throw DomainException.with(aMessage)
+        }
+    }
+
+    fun assertArgumentIsAnEmail(
+        email: String,
+        aMessage: String,
+    ): String {
+        val emailRegex = "^[A-Za-z0-9+_.-]+@(.+)\$".toRegex()
+        if (!emailRegex.matches(email)) {
+            throw DomainException.with(aMessage)
+        }
+        return email
+    }
 }
