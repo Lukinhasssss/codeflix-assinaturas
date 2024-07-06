@@ -13,4 +13,12 @@ object DocumentFactory {
             else -> throw DomainException.with("Invalid document type")
         }
     }
+
+    fun createCpf(documentNumber: String): Document.Cpf {
+        return Document.Cpf(value = documentNumber)
+    }
+
+    fun createCnpj(documentNumber: String): Document.Cnpj {
+        return Document.Cnpj(value = documentNumber)
+    }
 }
