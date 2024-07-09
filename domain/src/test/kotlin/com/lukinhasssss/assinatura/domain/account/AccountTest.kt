@@ -2,6 +2,9 @@ package com.lukinhasssss.assinatura.domain.account
 
 import com.lukinhasssss.assinatura.domain.Fixture
 import com.lukinhasssss.assinatura.domain.UnitTest
+import com.lukinhasssss.assinatura.domain.account.AccountCommand.ChangeDocumentCommand
+import com.lukinhasssss.assinatura.domain.account.AccountCommand.ChangeEmailCommand
+import com.lukinhasssss.assinatura.domain.account.AccountCommand.ChangeProfileCommand
 import com.lukinhasssss.assinatura.domain.exception.DomainException
 import com.lukinhasssss.assinatura.domain.person.Document
 import com.lukinhasssss.assinatura.domain.person.Email
@@ -22,10 +25,8 @@ class AccountTest : UnitTest {
         val expectedUserId = UserId(" USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
-        val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
+        val expectedDocument = Fixture.Person.document()
         val expectedEventsCount = 1
-        val expecetedAggregatedId = expectedId.value
-        val expectedAggregatedType = "Account"
 
         // when
         val actualAccount =
@@ -58,7 +59,7 @@ class AccountTest : UnitTest {
         val expectedUserId = UserId(" USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
-        val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
+        val expectedDocument = Fixture.Person.document()
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when - then
@@ -84,7 +85,7 @@ class AccountTest : UnitTest {
                 anUserId = expectedUserId,
                 aName = expectedName,
                 anEmail = expectedEmail,
-                aDocument = Document.create(documentType = "cpf", documentNumber = "12345678912"),
+                aDocument = Fixture.Person.document(),
             )
 
         // then
@@ -106,7 +107,7 @@ class AccountTest : UnitTest {
         val expectedUserId = UserId(" USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
-        val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
+        val expectedDocument = Fixture.Person.document()
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when
@@ -136,7 +137,7 @@ class AccountTest : UnitTest {
         val expectedUserId = ""
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
-        val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
+        val expectedDocument = Fixture.Person.document()
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when
@@ -165,7 +166,7 @@ class AccountTest : UnitTest {
         val expectedVersion = 1
         val expectedUserId = UserId(" USER-123")
         val expectedEmail = Email("john@gmail.com")
-        val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
+        val expectedDocument = Fixture.Person.document()
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when
@@ -194,7 +195,7 @@ class AccountTest : UnitTest {
         val expectedVersion = 1
         val expectedUserId = UserId(" USER-123")
         val expectedEmail = Email("john@gmail.com")
-        val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
+        val expectedDocument = Fixture.Person.document()
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when
@@ -223,7 +224,7 @@ class AccountTest : UnitTest {
         val expectedVersion = 1
         val expectedUserId = UserId(" USER-123")
         val expectedName = Fixture.Person.fullName()
-        val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
+        val expectedDocument = Fixture.Person.document()
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when
@@ -387,5 +388,110 @@ class AccountTest : UnitTest {
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)
+    }
+
+    @Test
+    fun `given valid account, when calls execute with profile command, should update name and address`() {
+        // given
+        val expectedId = AccountId(IdUtils.uuid())
+        val expectedVersion = 1
+        val expectedUserId = UserId(" USER-123")
+        val expectedName = Fixture.Person.fullName()
+        val expectedEmail = Email("john@gmail.com")
+        val expectedDocument = Fixture.Person.document()
+        val expectedAddress = Fixture.Person.fullAddress()
+        val expectedEventsCount = 0
+
+        val actualAccount =
+            Account.with(
+                anAccountId = expectedId,
+                anUserId = expectedUserId,
+                aName = Name("John", "Doe"),
+                anEmail = expectedEmail,
+                aDocument = expectedDocument,
+                version = expectedVersion,
+            )
+
+        // when
+        actualAccount.execute(ChangeProfileCommand(expectedName, expectedAddress))
+
+        // then
+        with(actualAccount) {
+            assertEquals(expectedId, id)
+            assertEquals(expectedVersion, version)
+            assertEquals(expectedUserId, userId)
+            assertEquals(expectedName, name)
+            assertEquals(expectedEmail, email)
+            assertEquals(expectedDocument, document)
+            assertEquals(expectedEventsCount, domainEvents.size)
+        }
+    }
+
+    @Test
+    fun `given valid account, when calls execute with email command, should update email`() {
+        // given
+        val expectedId = AccountId(IdUtils.uuid())
+        val expectedVersion = 1
+        val expectedUserId = UserId(" USER-123")
+        val expectedName = Fixture.Person.fullName()
+        val expectedEmail = Email(Fixture.Person.email())
+        val expectedDocument = Fixture.Person.document()
+
+        val actualAccount =
+            Account.with(
+                anAccountId = expectedId,
+                anUserId = expectedUserId,
+                aName = expectedName,
+                anEmail = Email("john@doe.com"),
+                aDocument = expectedDocument,
+                version = expectedVersion,
+            )
+
+        // when
+        actualAccount.execute(ChangeEmailCommand(expectedEmail))
+
+        // then
+        with(actualAccount) {
+            assertEquals(expectedId, id)
+            assertEquals(expectedVersion, version)
+            assertEquals(expectedUserId, userId)
+            assertEquals(expectedName, name)
+            assertEquals(expectedEmail, email)
+            assertEquals(expectedDocument, document)
+        }
+    }
+
+    @Test
+    fun `given valid account, when calls execute with document command, should update document`() {
+        // given
+        val expectedId = AccountId(IdUtils.uuid())
+        val expectedVersion = 1
+        val expectedUserId = UserId(" USER-123")
+        val expectedName = Fixture.Person.fullName()
+        val expectedEmail = Email(Fixture.Person.email())
+        val expectedDocument = Fixture.Person.document()
+
+        val actualAccount =
+            Account.with(
+                anAccountId = expectedId,
+                anUserId = expectedUserId,
+                aName = expectedName,
+                anEmail = expectedEmail,
+                aDocument = Document.create(documentType = "cpf", documentNumber = "12345678912"),
+                version = expectedVersion,
+            )
+
+        // when
+        actualAccount.execute(ChangeDocumentCommand(expectedDocument))
+
+        // then
+        with(actualAccount) {
+            assertEquals(expectedId, id)
+            assertEquals(expectedVersion, version)
+            assertEquals(expectedUserId, userId)
+            assertEquals(expectedName, name)
+            assertEquals(expectedEmail, email)
+            assertEquals(expectedDocument, document)
+        }
     }
 }
