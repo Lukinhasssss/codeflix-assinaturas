@@ -56,7 +56,6 @@ dependencies {
 
     testImplementation(project(path = ":domain", configuration = "testClasses"))
 
-    testImplementation("io.kotest:kotest-runner-junit5:${Version.KOTEST}")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")

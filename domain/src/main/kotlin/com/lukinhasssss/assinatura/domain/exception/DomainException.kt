@@ -7,6 +7,10 @@ open class DomainException(
     val errors: List<Error>,
 ) : NoStacktraceException(message) {
     companion object {
+        fun with(aMessage: String): DomainException {
+            return DomainException(message = aMessage, errors = listOf(Error(message = aMessage)))
+        }
+
         fun with(anError: Error): DomainException {
             return DomainException(message = anError.message, errors = listOf(anError))
         }
