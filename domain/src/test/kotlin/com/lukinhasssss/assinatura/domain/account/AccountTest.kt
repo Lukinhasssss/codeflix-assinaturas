@@ -8,13 +8,14 @@ import com.lukinhasssss.assinatura.domain.person.Email
 import com.lukinhasssss.assinatura.domain.person.Name
 import com.lukinhasssss.assinatura.domain.utils.IdUtils
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 
 class AccountTest : UnitTest {
     @Test
-    fun `Given a new account, when calls new account, should instantiate`() {
+    fun `given valid params, when calls new account, should instantiate and dispatch event`() {
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 0
@@ -22,6 +23,9 @@ class AccountTest : UnitTest {
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Document.create(documentType = "cpf", documentNumber = "12345678912")
+        val expectedEventsCount = 1
+        val expecetedAggregatedId = expectedId.value
+        val expectedAggregatedType = "Account"
 
         // when
         val actualAccount =
@@ -41,11 +45,13 @@ class AccountTest : UnitTest {
             assertEquals(expectedName, name)
             assertEquals(expectedEmail, email)
             assertEquals(expectedDocument, document)
+            assertEquals(expectedEventsCount, domainEvents.size)
+            assertInstanceOf(AccountEvent.AccountCreated::class.java, domainEvents.first())
         }
     }
 
     @Test
-    fun `Given valid params, when calls with, should instantiate`() {
+    fun `given valid params, when calls with, should instantiate`() {
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
@@ -62,7 +68,7 @@ class AccountTest : UnitTest {
     }
 
     @Test
-    fun `Given null address, when calls with, should instantiate`() {
+    fun `given null address, when calls with, should instantiate`() {
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
@@ -92,7 +98,7 @@ class AccountTest : UnitTest {
     }
 
     @Test
-    fun `Given an invalid accountId, when call with, should return error`() {
+    fun `given an invalid accountId, when call with, should return error`() {
         // given
         val expectedErrorMessage = "'accountId' should not be empty"
         val expectedId = ""
@@ -122,7 +128,7 @@ class AccountTest : UnitTest {
     }
 
     @Test
-    fun `Given an invalid userId, when call with, should return error`() {
+    fun `given an invalid userId, when call with, should return error`() {
         // given
         val expectedErrorMessage = "'userId' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
@@ -152,7 +158,7 @@ class AccountTest : UnitTest {
     }
 
     @Test
-    fun `Given an invalid firstName, when call with, should return error`() {
+    fun `given an invalid firstName, when call with, should return error`() {
         // given
         val expectedErrorMessage = "'firstName' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
@@ -181,7 +187,7 @@ class AccountTest : UnitTest {
     }
 
     @Test
-    fun `Given an invalid lastName, when call with, should return error`() {
+    fun `given an invalid lastName, when call with, should return error`() {
         // given
         val expectedErrorMessage = "'lastName' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
@@ -210,7 +216,7 @@ class AccountTest : UnitTest {
     }
 
     @Test
-    fun `Given an invalid email, when call with, should return error`() {
+    fun `given an invalid email, when call with, should return error`() {
         // given
         val expectedErrorMessage = "'email' should be a valid email"
         val expectedId = AccountId(IdUtils.uuid())
@@ -239,7 +245,7 @@ class AccountTest : UnitTest {
     }
 
     @Test
-    fun `Given an invalid document type, when call with, should return error`() {
+    fun `given an invalid document type, when call with, should return error`() {
         // given
         val expectedErrorMessage = "Invalid document type"
         val expectedId = AccountId(IdUtils.uuid())
@@ -268,7 +274,7 @@ class AccountTest : UnitTest {
     }
 
     @Test
-    fun `Given an empty cpf document number, when call with, should return error`() {
+    fun `given an empty cpf document number, when call with, should return error`() {
         // given
         val expectedErrorMessage = "'cpf' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
@@ -297,7 +303,7 @@ class AccountTest : UnitTest {
     }
 
     @Test
-    fun `Given an invalid cpf document number, when call with, should return error`() {
+    fun `given an invalid cpf document number, when call with, should return error`() {
         // given
         val expectedErrorMessage = "'cpf' is invalid"
         val expectedId = AccountId(IdUtils.uuid())
@@ -326,7 +332,7 @@ class AccountTest : UnitTest {
     }
 
     @Test
-    fun `Given an empty cnpj document number, when call with, should return error`() {
+    fun `given an empty cnpj document number, when call with, should return error`() {
         // given
         val expectedErrorMessage = "'cnpj' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
@@ -355,7 +361,7 @@ class AccountTest : UnitTest {
     }
 
     @Test
-    fun `Given an invalid cnpj document number, when call with, should return error`() {
+    fun `given an invalid cnpj document number, when call with, should return error`() {
         // given
         val expectedErrorMessage = "'cnpj' is invalid"
         val expectedId = AccountId(IdUtils.uuid())

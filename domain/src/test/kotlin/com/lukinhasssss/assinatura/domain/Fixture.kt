@@ -19,9 +19,9 @@ object Fixture {
         fun email() = FAKER.internet().emailAddress()
 
         // Document
-        fun cpf() = FAKER.cpf().valid()
+        fun cpf() = FAKER.cpf().valid(false)
 
-        fun cnpj() = FAKER.cnpj().valid()
+        fun cnpj() = FAKER.cnpj().valid(false)
 
         fun document(type: String? = null) =
             when (type) {
