@@ -12,7 +12,8 @@ repositories {
 dependencies {
     implementation("io.vavr:vavr-kotlin:${Version.VAVR}")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.3")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.3")
 }
 
 tasks.withType<Test> {
