@@ -6,7 +6,7 @@ import java.time.Instant
 
 sealed interface AccountEvent : DomainEvent {
     companion object {
-        const val TYPE = "Account"
+        val TYPE = Account::class.simpleName!!
     }
 
     val accountId: String
