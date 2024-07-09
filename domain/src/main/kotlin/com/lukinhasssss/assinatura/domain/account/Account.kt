@@ -13,7 +13,7 @@ class Account private constructor(
     var name: Name,
     var email: Email,
     var document: Document,
-    val billingAddress: Address? = null,
+    var billingAddress: Address? = null,
 ) : AggregateRoot<AccountId>(accountId) {
     init {
         userId = assertArgumentNotNull(userId, "'userId' should not be null")
@@ -49,5 +49,28 @@ class Account private constructor(
                 document = aDocument,
                 billingAddress = billingAddress,
             )
+    }
+
+    fun execute(vararg commands: AccountCommand) {
+        commands.forEach { command ->
+            when (command) {
+                is AccountCommand.ChangeProfileCommand -> apply(command)
+                is AccountCommand.ChangeEmailCommand -> apply(command)
+                is AccountCommand.ChangeDocumentCommand -> apply(command)
+            }
+        }
+    }
+
+    private fun apply(command: AccountCommand.ChangeProfileCommand) {
+        name = command.aName
+        billingAddress = command.aBillingAddress
+    }
+
+    private fun apply(command: AccountCommand.ChangeEmailCommand) {
+        email = command.anEmail
+    }
+
+    private fun apply(command: AccountCommand.ChangeDocumentCommand) {
+        document = command.aDocument
     }
 }
