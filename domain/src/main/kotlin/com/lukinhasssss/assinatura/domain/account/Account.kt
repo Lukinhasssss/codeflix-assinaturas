@@ -34,13 +34,14 @@ class Account private constructor(
             anEmail: Email,
             aDocument: Document,
         ): Account {
-            val anAccount = Account(
-                accountId = anAccountId,
-                userId = anUserId,
-                name = aName,
-                email = anEmail,
-                document = aDocument,
-            )
+            val anAccount =
+                Account(
+                    accountId = anAccountId,
+                    userId = anUserId,
+                    name = aName,
+                    email = anEmail,
+                    document = aDocument,
+                )
             anAccount.registerEvent(AccountCreated(anAccount))
             return anAccount
         }

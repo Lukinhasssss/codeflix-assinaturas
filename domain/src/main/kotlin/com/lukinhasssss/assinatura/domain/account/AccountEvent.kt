@@ -21,7 +21,7 @@ sealed interface AccountEvent : DomainEvent {
         override val accountId: String,
         val email: String,
         val fullName: String,
-        override val occurredOn: Instant
+        override val occurredOn: Instant,
     ) : AccountEvent {
         init {
             assertArgumentNotEmpty(accountId, "'accountId' should not be empty")
@@ -33,7 +33,7 @@ sealed interface AccountEvent : DomainEvent {
             accountId = anAccount.id.value,
             email = anAccount.email.value,
             fullName = anAccount.name.fullName(),
-            occurredOn = InstantUtils.now()
+            occurredOn = InstantUtils.now(),
         )
     }
 }

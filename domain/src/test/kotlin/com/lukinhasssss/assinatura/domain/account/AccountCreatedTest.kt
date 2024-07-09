@@ -52,9 +52,10 @@ class AccountCreatedTest : UnitTest {
         val expectedOccurredOn = InstantUtils.now()
 
         // when
-        val actualError = assertThrows<DomainException> {
-            AccountCreated(expectedAccountId, expectedEmail, expectedFullName, expectedOccurredOn)
-        }
+        val actualError =
+            assertThrows<DomainException> {
+                AccountCreated(expectedAccountId, expectedEmail, expectedFullName, expectedOccurredOn)
+            }
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)
@@ -71,9 +72,10 @@ class AccountCreatedTest : UnitTest {
         val expectedOccurredOn = InstantUtils.now()
 
         // when
-        val actualError = assertThrows<DomainException> {
-            AccountCreated(expectedAccountId, expectedEmail, expectedFullName, expectedOccurredOn)
-        }
+        val actualError =
+            assertThrows<DomainException> {
+                AccountCreated(expectedAccountId, expectedEmail, expectedFullName, expectedOccurredOn)
+            }
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)
@@ -90,9 +92,10 @@ class AccountCreatedTest : UnitTest {
         val expectedOccurredOn = InstantUtils.now()
 
         // when
-        val actualError = assertThrows<DomainException> {
-            AccountCreated(expectedAccountId, expectedEmail, expectedFullName, expectedOccurredOn)
-        }
+        val actualError =
+            assertThrows<DomainException> {
+                AccountCreated(expectedAccountId, expectedEmail, expectedFullName, expectedOccurredOn)
+            }
 
         // then
         assertEquals(expectedErrorMessage, actualError.message)
