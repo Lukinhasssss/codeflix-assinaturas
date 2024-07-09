@@ -7,4 +7,6 @@ data class Name(val firstName: String, val lastName: String) : ValueObject {
         assertArgumentNotEmpty(firstName, "'firstName' should not be empty")
         assertArgumentNotEmpty(lastName, "'lastName' should not be empty")
     }
+
+    fun fullName(): String = "$firstName $lastName"
 }

@@ -1,6 +1,10 @@
 package com.lukinhasssss.assinatura.domain.account
 
 import com.lukinhasssss.admin.catalogo.domain.AggregateRoot
+import com.lukinhasssss.assinatura.domain.account.AccountCommand.ChangeDocumentCommand
+import com.lukinhasssss.assinatura.domain.account.AccountCommand.ChangeEmailCommand
+import com.lukinhasssss.assinatura.domain.account.AccountCommand.ChangeProfileCommand
+import com.lukinhasssss.assinatura.domain.account.AccountEvent.AccountCreated
 import com.lukinhasssss.assinatura.domain.person.Address
 import com.lukinhasssss.assinatura.domain.person.Document
 import com.lukinhasssss.assinatura.domain.person.Email
@@ -29,7 +33,17 @@ class Account private constructor(
             aName: Name,
             anEmail: Email,
             aDocument: Document,
-        ): Account = Account(accountId = anAccountId, userId = anUserId, name = aName, email = anEmail, document = aDocument)
+        ): Account {
+            val anAccount = Account(
+                accountId = anAccountId,
+                userId = anUserId,
+                name = aName,
+                email = anEmail,
+                document = aDocument,
+            )
+            anAccount.registerEvent(AccountCreated(anAccount))
+            return anAccount
+        }
 
         fun with(
             anAccountId: AccountId,
@@ -54,23 +68,23 @@ class Account private constructor(
     fun execute(vararg commands: AccountCommand) {
         commands.forEach { command ->
             when (command) {
-                is AccountCommand.ChangeProfileCommand -> apply(command)
-                is AccountCommand.ChangeEmailCommand -> apply(command)
-                is AccountCommand.ChangeDocumentCommand -> apply(command)
+                is ChangeProfileCommand -> apply(command)
+                is ChangeEmailCommand -> apply(command)
+                is ChangeDocumentCommand -> apply(command)
             }
         }
     }
 
-    private fun apply(command: AccountCommand.ChangeProfileCommand) {
+    private fun apply(command: ChangeProfileCommand) {
         name = command.aName
         billingAddress = command.aBillingAddress
     }
 
-    private fun apply(command: AccountCommand.ChangeEmailCommand) {
+    private fun apply(command: ChangeEmailCommand) {
         email = command.anEmail
     }
 
-    private fun apply(command: AccountCommand.ChangeDocumentCommand) {
+    private fun apply(command: ChangeDocumentCommand) {
         document = command.aDocument
     }
 }
