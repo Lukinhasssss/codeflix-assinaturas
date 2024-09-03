@@ -6,7 +6,6 @@ import com.lukinhasssss.assinatura.domain.exception.DomainException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.Currency
 
 class MonetaryAmountTest : UnitTest {
     @Test
@@ -46,9 +45,10 @@ class MonetaryAmountTest : UnitTest {
         val expectedAmount = -100.0
 
         // when
-        val exception = assertThrows<DomainException> {
-            MonetaryAmount(expectedCurrency, expectedAmount)
-        }
+        val exception =
+            assertThrows<DomainException> {
+                MonetaryAmount(expectedCurrency, expectedAmount)
+            }
 
         // then
         assertEquals(expectedErrorMessage, exception.message)

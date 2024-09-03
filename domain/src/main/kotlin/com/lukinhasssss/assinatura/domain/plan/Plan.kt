@@ -13,7 +13,7 @@ class Plan private constructor(
     val price: MonetaryAmount,
     val createdAt: Instant = InstantUtils.now(),
     val updatedAt: Instant = InstantUtils.now(),
-    val deletedAt: Instant?
+    val deletedAt: Instant?,
 ) : AggregateRoot<PlanId>(planId) {
     init {
         name = assertArgumentNotEmpty(name, "'name' should not be empty")
@@ -28,7 +28,7 @@ class Plan private constructor(
             aName: String,
             aDescription: String,
             isActive: Boolean = false,
-            aPrice: MonetaryAmount
+            aPrice: MonetaryAmount,
         ): Plan {
             return Plan(
                 planId = aPlanId,
@@ -36,7 +36,7 @@ class Plan private constructor(
                 description = aDescription,
                 isActive = isActive,
                 price = aPrice,
-                deletedAt = if (isActive) null else InstantUtils.now()
+                deletedAt = if (isActive) null else InstantUtils.now(),
             )
         }
 
@@ -49,7 +49,7 @@ class Plan private constructor(
             aPrice: MonetaryAmount,
             createdAt: Instant = InstantUtils.now(),
             updatedAt: Instant = InstantUtils.now(),
-            deletedAt: Instant? = null
+            deletedAt: Instant? = null,
         ): Plan {
             return Plan(
                 planId = aPlanId,
@@ -60,7 +60,7 @@ class Plan private constructor(
                 price = aPrice,
                 createdAt = createdAt,
                 updatedAt = updatedAt,
-                deletedAt = deletedAt
+                deletedAt = deletedAt,
             )
         }
     }

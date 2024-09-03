@@ -5,7 +5,7 @@ import java.util.Currency
 
 data class MonetaryAmount(
     val currency: Currency,
-    val amount: Double
+    val amount: Double,
 ) : ValueObject {
     init {
         assertConditionTrue(amount >= 0, "'amount' should be greater than or equal to 0")

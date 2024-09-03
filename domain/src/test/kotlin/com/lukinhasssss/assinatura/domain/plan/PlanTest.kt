@@ -30,7 +30,7 @@ class PlanTest : UnitTest {
                 expectedName,
                 expectedDescription,
                 expectedIsActive,
-                expectedPrice
+                expectedPrice,
             )
 
         // then
@@ -71,7 +71,7 @@ class PlanTest : UnitTest {
                 expectedPrice,
                 expectedCreatedAt,
                 expectedUpdatedAt,
-                expectedDeletedAt
+                expectedDeletedAt,
             )
 
         // then
@@ -113,7 +113,7 @@ class PlanTest : UnitTest {
                     expectedPrice,
                     expectedCreatedAt,
                     expectedUpdatedAt,
-                    expectedDeletedAt
+                    expectedDeletedAt,
                 )
             }
 
@@ -148,7 +148,7 @@ class PlanTest : UnitTest {
                     expectedPrice,
                     expectedCreatedAt,
                     expectedUpdatedAt,
-                    expectedDeletedAt
+                    expectedDeletedAt,
                 )
             }
 
@@ -183,7 +183,7 @@ class PlanTest : UnitTest {
                     expectedPrice,
                     expectedCreatedAt,
                     expectedUpdatedAt,
-                    expectedDeletedAt
+                    expectedDeletedAt,
                 )
             }
 
@@ -218,7 +218,7 @@ class PlanTest : UnitTest {
                     expectedPrice,
                     expectedCreatedAt,
                     expectedUpdatedAt,
-                    expectedDeletedAt
+                    expectedDeletedAt,
                 )
             }
 
@@ -253,7 +253,7 @@ class PlanTest : UnitTest {
                     expectedPrice,
                     expectedCreatedAt,
                     expectedUpdatedAt,
-                    expectedDeletedAt
+                    expectedDeletedAt,
                 )
             }
 
@@ -284,7 +284,7 @@ class PlanTest : UnitTest {
                 aPrice = expectedPrice,
                 createdAt = expectedCreatedAt,
                 updatedAt = expectedUpdatedAt,
-                deletedAt = expectedDeletedAt
+                deletedAt = expectedDeletedAt,
             )
 
         // then
@@ -315,7 +315,7 @@ class PlanTest : UnitTest {
                 expectedPrice,
                 expectedCreatedAt,
                 expectedUpdatedAt,
-                expectedDeletedAt
+                expectedDeletedAt,
             )
 
         // then
@@ -348,7 +348,7 @@ class PlanTest : UnitTest {
                     MonetaryAmount(Fixture.currency(), -32.90),
                     expectedCreatedAt,
                     expectedUpdatedAt,
-                    expectedDeletedAt
+                    expectedDeletedAt,
                 )
             }
 
@@ -379,7 +379,7 @@ class PlanTest : UnitTest {
                 expectedIsActive,
                 expectedPrice,
                 expectedCreatedAt,
-                expectedUpdatedAt
+                expectedUpdatedAt,
             )
 
         // then

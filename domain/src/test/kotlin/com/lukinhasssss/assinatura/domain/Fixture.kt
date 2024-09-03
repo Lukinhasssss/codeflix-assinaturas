@@ -4,7 +4,6 @@ import com.lukinhasssss.assinatura.domain.person.Address
 import com.lukinhasssss.assinatura.domain.person.DocumentFactory
 import com.lukinhasssss.assinatura.domain.person.Name
 import net.datafaker.Faker
-import java.util.Currency
 
 object Fixture {
     private val FAKER = Faker()
