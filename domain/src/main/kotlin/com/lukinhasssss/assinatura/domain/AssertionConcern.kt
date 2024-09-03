@@ -23,6 +23,17 @@ interface AssertionConcern {
         return value
     }
 
+    fun assertArgumentMaxLength(
+        value: String,
+        maxLength: Int,
+        aMessage: String,
+    ): String {
+        if (value.length > maxLength) {
+            throw DomainException.with(aMessage)
+        }
+        return value
+    }
+
     fun assertArgumentExactlyLength(
         value: String,
         length: Int,
