@@ -8,6 +8,8 @@ import net.datafaker.Faker
 object Fixture {
     private val FAKER = Faker()
 
+    fun currency() = FAKER.currency().code()
+
     object Person {
         // Person
         fun firstName() = FAKER.name().firstName()
