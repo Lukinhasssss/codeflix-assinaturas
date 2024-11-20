@@ -6,14 +6,14 @@ import java.time.Instant
 
 class Plan private constructor(
     planId: PlanId,
-    val version: Int = 0,
+    var version: Int = 0,
     var name: String,
     var description: String,
-    val isActive: Boolean = false,
+    var isActive: Boolean = false,
     val price: MonetaryAmount,
     val createdAt: Instant = InstantUtils.now(),
-    val updatedAt: Instant = InstantUtils.now(),
-    val deletedAt: Instant?,
+    var updatedAt: Instant = InstantUtils.now(),
+    var deletedAt: Instant?,
 ) : AggregateRoot<PlanId>(planId) {
     init {
         name = assertArgumentNotEmpty(name, "'name' should not be empty")
@@ -66,5 +66,45 @@ class Plan private constructor(
                 deletedAt = deletedAt,
             )
         }
+    }
+
+    fun execute(vararg commands: PlanCommand) {
+        if (commands.isEmpty()) return
+
+        for (command in commands) {
+            when (command) {
+                is PlanCommand.ChangePlan -> changePlan(command)
+                is PlanCommand.InactivatePlan -> inactivatePlan()
+                is PlanCommand.ActivatePlan -> activatePlan()
+            }
+        }
+
+        incrementVersion()
+        updatedAt = InstantUtils.now()
+    }
+
+    private fun changePlan(command: PlanCommand.ChangePlan) {
+        name = command.name
+        description = command.description
+
+        if (command.isActive) {
+            activatePlan()
+        } else {
+            inactivatePlan()
+        }
+    }
+
+    private fun inactivatePlan() {
+        deletedAt = deletedAt ?: InstantUtils.now()
+        isActive = false
+    }
+
+    private fun activatePlan() {
+        deletedAt = null
+        isActive = true
+    }
+
+    private fun incrementVersion() {
+        version++
     }
 }

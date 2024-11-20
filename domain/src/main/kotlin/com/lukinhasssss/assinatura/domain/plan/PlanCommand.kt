@@ -4,7 +4,7 @@ sealed interface PlanCommand {
     data class ChangePlan(
         val name: String,
         val description: String,
-        val active: Boolean,
+        val isActive: Boolean,
     ) : PlanCommand
 
     class InactivatePlan : PlanCommand
