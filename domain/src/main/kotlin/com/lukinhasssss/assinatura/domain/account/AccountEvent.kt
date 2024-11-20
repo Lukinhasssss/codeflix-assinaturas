@@ -1,6 +1,6 @@
 package com.lukinhasssss.assinatura.domain.account
 
-import com.lukinhasssss.admin.catalogo.domain.event.DomainEvent
+import com.lukinhasssss.assinatura.domain.DomainEvent
 import com.lukinhasssss.assinatura.domain.utils.InstantUtils
 import java.time.Instant
 

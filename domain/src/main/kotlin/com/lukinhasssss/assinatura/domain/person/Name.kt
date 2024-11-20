@@ -1,6 +1,6 @@
 package com.lukinhasssss.assinatura.domain.person
 
-import com.lukinhasssss.admin.catalogo.domain.ValueObject
+import com.lukinhasssss.assinatura.domain.ValueObject
 
 data class Name(val firstName: String, val lastName: String) : ValueObject {
     init {

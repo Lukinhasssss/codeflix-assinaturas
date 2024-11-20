@@ -1,7 +1,4 @@
-package com.lukinhasssss.admin.catalogo.domain
-
-import com.lukinhasssss.admin.catalogo.domain.event.DomainEvent
-import com.lukinhasssss.assinatura.domain.AssertionConcern
+package com.lukinhasssss.assinatura.domain
 
 abstract class Entity<ID : Identifier>(
     val id: ID,

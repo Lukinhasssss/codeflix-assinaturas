@@ -1,6 +1,6 @@
 package com.lukinhasssss.assinatura.domain.person
 
-import com.lukinhasssss.admin.catalogo.domain.ValueObject
+import com.lukinhasssss.assinatura.domain.ValueObject
 import java.util.regex.Pattern
 
 data class Email(val value: String) : ValueObject {

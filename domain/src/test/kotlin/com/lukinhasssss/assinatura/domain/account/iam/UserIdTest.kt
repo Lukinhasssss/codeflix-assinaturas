@@ -1,7 +1,6 @@
 package com.lukinhasssss.assinatura.domain.account.iam
 
 import com.lukinhasssss.assinatura.domain.UnitTest
-import com.lukinhasssss.assinatura.domain.account.UserId
 import com.lukinhasssss.assinatura.domain.exception.DomainException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

@@ -1,5 +1,3 @@
-package com.lukinhasssss.admin.catalogo.domain
-
-import com.lukinhasssss.assinatura.domain.AssertionConcern
+package com.lukinhasssss.assinatura.domain
 
 interface ValueObject : AssertionConcern

@@ -54,8 +54,7 @@ class SecurityConfig {
     private class KeycloakJwtConverter(
         val authoritiesConverter: KeycloakAuthoritiesConverter = KeycloakAuthoritiesConverter(),
     ) : Converter<Jwt, AbstractAuthenticationToken> {
-        override fun convert(jwt: Jwt): AbstractAuthenticationToken =
-            JwtAuthenticationToken(jwt, extractAuthorities(jwt), extractPrincipal(jwt))
+        override fun convert(jwt: Jwt): AbstractAuthenticationToken = JwtAuthenticationToken(jwt, extractAuthorities(jwt), extractPrincipal(jwt))
 
         private fun extractPrincipal(jwt: Jwt): String? = jwt.getClaimAsString(JwtClaimNames.SUB)
 

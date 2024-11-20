@@ -1,6 +1,6 @@
 package com.lukinhasssss.assinatura.domain.plan
 
-import com.lukinhasssss.admin.catalogo.domain.AggregateRoot
+import com.lukinhasssss.assinatura.domain.AggregateRoot
 import com.lukinhasssss.assinatura.domain.utils.InstantUtils
 import java.time.Instant
 
@@ -17,12 +17,15 @@ class Plan private constructor(
 ) : AggregateRoot<PlanId>(planId) {
     init {
         name = assertArgumentNotEmpty(name, "'name' should not be empty")
-        name = assertArgumentMaxLength(name, 100, "'name' should not be greater than 100 characters")
+        name = assertArgumentMaxLength(name, MAX_NAME_LENGTH, "'name' should not be greater than 100 characters")
         description = assertArgumentNotEmpty(description, "'description' should not be empty")
-        description = assertArgumentMaxLength(description, 500, "'description' should not be greater than 500 characters")
+        description = assertArgumentMaxLength(description, MAX_DESCRIPTION_LENGTH, "'description' should not be greater than 500 characters")
     }
 
     companion object {
+        const val MAX_NAME_LENGTH = 100
+        const val MAX_DESCRIPTION_LENGTH = 500
+
         fun newPlan(
             aPlanId: PlanId,
             aName: String,

@@ -1,6 +1,6 @@
 package com.lukinhasssss.assinatura.domain.plan
 
-import com.lukinhasssss.admin.catalogo.domain.ValueObject
+import com.lukinhasssss.assinatura.domain.ValueObject
 import java.util.Currency
 
 data class MonetaryAmount(
