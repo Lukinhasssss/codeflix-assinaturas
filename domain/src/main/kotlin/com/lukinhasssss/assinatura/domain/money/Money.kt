@@ -3,7 +3,7 @@ package com.lukinhasssss.assinatura.domain.money
 import com.lukinhasssss.assinatura.domain.ValueObject
 import java.util.Currency
 
-data class MonetaryAmount(
+data class Money(
     val currency: Currency,
     val amount: Double,
 ) : ValueObject {

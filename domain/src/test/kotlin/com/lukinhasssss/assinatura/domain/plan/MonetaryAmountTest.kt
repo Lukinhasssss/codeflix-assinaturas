@@ -3,7 +3,7 @@ package com.lukinhasssss.assinatura.domain.plan
 import com.lukinhasssss.assinatura.domain.Fixture
 import com.lukinhasssss.assinatura.domain.UnitTest
 import com.lukinhasssss.assinatura.domain.exception.DomainException
-import com.lukinhasssss.assinatura.domain.money.MonetaryAmount
+import com.lukinhasssss.assinatura.domain.money.Money
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -16,11 +16,11 @@ class MonetaryAmountTest : UnitTest {
         val expectedAmount = 100.0
 
         // when
-        val actualMonetaryAmount = MonetaryAmount(expectedCurrency, expectedAmount)
+        val actualMoney = Money(expectedCurrency, expectedAmount)
 
         // then
-        assertEquals(expectedAmount, actualMonetaryAmount.amount)
-        assertEquals(expectedCurrency, actualMonetaryAmount.currency.currencyCode)
+        assertEquals(expectedAmount, actualMoney.amount)
+        assertEquals(expectedCurrency, actualMoney.currency.currencyCode)
     }
 
     @Test
@@ -30,11 +30,11 @@ class MonetaryAmountTest : UnitTest {
         val expectedAmount = 0.0
 
         // when
-        val actualMonetaryAmount = MonetaryAmount(expectedCurrency, expectedAmount)
+        val actualMoney = Money(expectedCurrency, expectedAmount)
 
         // then
-        assertEquals(expectedAmount, actualMonetaryAmount.amount)
-        assertEquals(expectedCurrency, actualMonetaryAmount.currency.currencyCode)
+        assertEquals(expectedAmount, actualMoney.amount)
+        assertEquals(expectedCurrency, actualMoney.currency.currencyCode)
     }
 
     @Test
@@ -48,7 +48,7 @@ class MonetaryAmountTest : UnitTest {
         // when
         val exception =
             assertThrows<DomainException> {
-                MonetaryAmount(expectedCurrency, expectedAmount)
+                Money(expectedCurrency, expectedAmount)
             }
 
         // then

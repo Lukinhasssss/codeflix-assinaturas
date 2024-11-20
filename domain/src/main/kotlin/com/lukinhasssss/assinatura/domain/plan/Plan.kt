@@ -1,7 +1,7 @@
 package com.lukinhasssss.assinatura.domain.plan
 
 import com.lukinhasssss.assinatura.domain.AggregateRoot
-import com.lukinhasssss.assinatura.domain.money.MonetaryAmount
+import com.lukinhasssss.assinatura.domain.money.Money
 import com.lukinhasssss.assinatura.domain.utils.InstantUtils
 import java.time.Instant
 
@@ -11,7 +11,7 @@ class Plan private constructor(
     var name: String,
     var description: String,
     var isActive: Boolean = false,
-    val price: MonetaryAmount,
+    val price: Money,
     val createdAt: Instant = InstantUtils.now(),
     var updatedAt: Instant = InstantUtils.now(),
     var deletedAt: Instant?,
@@ -32,7 +32,7 @@ class Plan private constructor(
             aName: String,
             aDescription: String,
             isActive: Boolean = false,
-            aPrice: MonetaryAmount,
+            aPrice: Money,
         ): Plan {
             return Plan(
                 planId = aPlanId,
@@ -50,7 +50,7 @@ class Plan private constructor(
             aName: String,
             aDescription: String,
             isActive: Boolean = false,
-            aPrice: MonetaryAmount,
+            aPrice: Money,
             createdAt: Instant = InstantUtils.now(),
             updatedAt: Instant = InstantUtils.now(),
             deletedAt: Instant? = null,

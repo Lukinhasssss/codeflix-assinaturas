@@ -3,7 +3,7 @@ package com.lukinhasssss.assinatura.domain.plan
 import com.lukinhasssss.assinatura.domain.Fixture
 import com.lukinhasssss.assinatura.domain.UnitTest
 import com.lukinhasssss.assinatura.domain.exception.DomainException
-import com.lukinhasssss.assinatura.domain.money.MonetaryAmount
+import com.lukinhasssss.assinatura.domain.money.Money
 import com.lukinhasssss.assinatura.domain.utils.IdUtils
 import com.lukinhasssss.assinatura.domain.utils.InstantUtils
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -23,7 +23,7 @@ class PlanTest : UnitTest {
         val expectedName = "Plus"
         val expectedDescription = "The best plan"
         val expectedIsActive = true
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+        val expectedPrice = Money(Fixture.currency(), 32.90)
 
         // when
         val actualPlan =
@@ -57,7 +57,7 @@ class PlanTest : UnitTest {
         val expectedName = "Plus"
         val expectedDescription = "The best plan"
         val expectedIsActive = true
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+        val expectedPrice = Money(Fixture.currency(), 32.90)
         val expectedCreatedAt = InstantUtils.now()
         val expectedUpdatedAt = InstantUtils.now()
         val expectedDeletedAt = InstantUtils.now()
@@ -98,7 +98,7 @@ class PlanTest : UnitTest {
         val expectedName = "Plus"
         val expectedDescription = "The best plan"
         val expectedIsActive = true
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+        val expectedPrice = Money(Fixture.currency(), 32.90)
         val expectedCreatedAt = InstantUtils.now()
         val expectedUpdatedAt = InstantUtils.now()
         val expectedDeletedAt = InstantUtils.now()
@@ -133,7 +133,7 @@ class PlanTest : UnitTest {
         val expectedName = ""
         val expectedDescription = "The best plan"
         val expectedIsActive = true
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+        val expectedPrice = Money(Fixture.currency(), 32.90)
         val expectedCreatedAt = InstantUtils.now()
         val expectedUpdatedAt = InstantUtils.now()
         val expectedDeletedAt = InstantUtils.now()
@@ -168,7 +168,7 @@ class PlanTest : UnitTest {
         val expectedName = "a".repeat(101)
         val expectedDescription = "The best plan"
         val expectedIsActive = true
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+        val expectedPrice = Money(Fixture.currency(), 32.90)
         val expectedCreatedAt = InstantUtils.now()
         val expectedUpdatedAt = InstantUtils.now()
         val expectedDeletedAt = InstantUtils.now()
@@ -203,7 +203,7 @@ class PlanTest : UnitTest {
         val expectedName = "Plus"
         val expectedDescription = ""
         val expectedIsActive = true
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+        val expectedPrice = Money(Fixture.currency(), 32.90)
         val expectedCreatedAt = InstantUtils.now()
         val expectedUpdatedAt = InstantUtils.now()
         val expectedDeletedAt = InstantUtils.now()
@@ -238,7 +238,7 @@ class PlanTest : UnitTest {
         val expectedName = "Plus"
         val expectedDescription = "a".repeat(501)
         val expectedIsActive = true
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+        val expectedPrice = Money(Fixture.currency(), 32.90)
         val expectedCreatedAt = InstantUtils.now()
         val expectedUpdatedAt = InstantUtils.now()
         val expectedDeletedAt = InstantUtils.now()
@@ -271,7 +271,7 @@ class PlanTest : UnitTest {
         val expectedName = "Plus"
         val expectedDescription = "The best plan"
         val expectedIsActive = false
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+        val expectedPrice = Money(Fixture.currency(), 32.90)
         val expectedCreatedAt = InstantUtils.now()
         val expectedUpdatedAt = InstantUtils.now()
         val expectedDeletedAt = InstantUtils.now()
@@ -301,7 +301,7 @@ class PlanTest : UnitTest {
         val expectedName = "Plus"
         val expectedDescription = "The best plan"
         val expectedIsActive = true
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 0.0)
+        val expectedPrice = Money(Fixture.currency(), 0.0)
         val expectedCreatedAt = InstantUtils.now()
         val expectedUpdatedAt = InstantUtils.now()
         val expectedDeletedAt = InstantUtils.now()
@@ -347,7 +347,7 @@ class PlanTest : UnitTest {
                     expectedName,
                     expectedDescription,
                     expectedIsActive,
-                    MonetaryAmount(Fixture.currency(), -32.90),
+                    Money(Fixture.currency(), -32.90),
                     expectedCreatedAt,
                     expectedUpdatedAt,
                     expectedDeletedAt,
@@ -366,7 +366,7 @@ class PlanTest : UnitTest {
         val expectedName = "Plus"
         val expectedDescription = "The best plan"
         val expectedIsActive = true
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+        val expectedPrice = Money(Fixture.currency(), 32.90)
         val expectedCreatedAt = InstantUtils.now()
         val expectedUpdatedAt = InstantUtils.now()
         val expectedDeletedAt: LocalDateTime? = null
@@ -396,7 +396,7 @@ class PlanTest : UnitTest {
         val expectedName = "Plus"
         val expectedDescription = "The best plan"
         val expectedIsActive = false
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+        val expectedPrice = Money(Fixture.currency(), 32.90)
 
         val actualPlan = Plan.newPlan(expectedId, expectedName, expectedDescription, true, expectedPrice)
         assertTrue(actualPlan.isActive)
@@ -428,7 +428,7 @@ class PlanTest : UnitTest {
         val expectedName = "Plus"
         val expectedDescription = "The best plan"
         val expectedIsActive = true
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+        val expectedPrice = Money(Fixture.currency(), 32.90)
 
         val actualPlan = Plan.newPlan(expectedId, expectedName, expectedDescription, false, expectedPrice)
         assertTrue(!actualPlan.isActive)
@@ -460,7 +460,7 @@ class PlanTest : UnitTest {
         val expectedName = "Plus"
         val expectedDescription = "The best plan"
         val expectedIsActive = true
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+        val expectedPrice = Money(Fixture.currency(), 32.90)
 
         val actualPlan = Plan.newPlan(expectedId, expectedName, expectedDescription, expectedIsActive, expectedPrice)
 
@@ -494,7 +494,7 @@ class PlanTest : UnitTest {
         val expectedName = "Plus"
         val expectedDescription = "The best plan"
         val expectedIsActive = true
-        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+        val expectedPrice = Money(Fixture.currency(), 32.90)
 
         val actualPlan = Plan.newPlan(expectedId, expectedName, expectedDescription, expectedIsActive, expectedPrice)
 
