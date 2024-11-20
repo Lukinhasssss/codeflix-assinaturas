@@ -1,4 +1,4 @@
-package com.lukinhasssss.assinatura.domain.plan
+package com.lukinhasssss.assinatura.domain.money
 
 import com.lukinhasssss.assinatura.domain.ValueObject
 import java.util.Currency

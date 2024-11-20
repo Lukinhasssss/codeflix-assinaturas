@@ -1,6 +1,7 @@
 package com.lukinhasssss.assinatura.domain.plan
 
 import com.lukinhasssss.assinatura.domain.AggregateRoot
+import com.lukinhasssss.assinatura.domain.money.MonetaryAmount
 import com.lukinhasssss.assinatura.domain.utils.InstantUtils
 import java.time.Instant
 

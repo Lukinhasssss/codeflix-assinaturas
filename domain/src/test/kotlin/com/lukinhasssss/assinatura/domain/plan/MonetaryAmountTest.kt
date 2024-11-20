@@ -3,6 +3,7 @@ package com.lukinhasssss.assinatura.domain.plan
 import com.lukinhasssss.assinatura.domain.Fixture
 import com.lukinhasssss.assinatura.domain.UnitTest
 import com.lukinhasssss.assinatura.domain.exception.DomainException
+import com.lukinhasssss.assinatura.domain.money.MonetaryAmount
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
