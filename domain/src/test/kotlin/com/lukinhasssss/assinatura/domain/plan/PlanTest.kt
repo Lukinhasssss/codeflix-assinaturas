@@ -8,6 +8,7 @@ import com.lukinhasssss.assinatura.domain.utils.InstantUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.time.LocalDateTime
@@ -384,5 +385,132 @@ class PlanTest : UnitTest {
 
         // then
         assertEquals(expectedDeletedAt, actualPlan.deletedAt)
+    }
+
+    @Test
+    fun `given active plan, when execute inactivate command, should inactivate`() {
+        // given
+        val expectedId = PlanId(IdUtils.uuid())
+        val expectedVersion = 1
+        val expectedName = "Plus"
+        val expectedDescription = "The best plan"
+        val expectedIsActive = false
+        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+
+        val actualPlan = Plan.newPlan(expectedId, expectedName, expectedDescription, true, expectedPrice)
+        assertTrue(actualPlan.isActive)
+        assertNull(actualPlan.deletedAt)
+
+        // when
+        Thread.sleep(1)
+        actualPlan.execute(PlanCommand.InactivatePlan())
+
+        // then
+        with(actualPlan) {
+            assertEquals(expectedId, id)
+            assertEquals(expectedVersion, version)
+            assertEquals(expectedName, name)
+            assertEquals(expectedDescription, description)
+            assertEquals(expectedIsActive, isActive)
+            assertEquals(expectedPrice, price)
+            assertNotNull(createdAt)
+            assertTrue(updatedAt.isAfter(createdAt))
+            assertNotNull(deletedAt)
+        }
+    }
+
+    @Test
+    fun `given inactive plan, when execute activate command, should activate`() {
+        // given
+        val expectedId = PlanId(IdUtils.uuid())
+        val expectedVersion = 1
+        val expectedName = "Plus"
+        val expectedDescription = "The best plan"
+        val expectedIsActive = true
+        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+
+        val actualPlan = Plan.newPlan(expectedId, expectedName, expectedDescription, false, expectedPrice)
+        assertTrue(!actualPlan.isActive)
+        assertNotNull(actualPlan.deletedAt)
+
+        // when
+        Thread.sleep(1)
+        actualPlan.execute(PlanCommand.ActivatePlan())
+
+        // then
+        with(actualPlan) {
+            assertEquals(expectedId, id)
+            assertEquals(expectedVersion, version)
+            assertEquals(expectedName, name)
+            assertEquals(expectedDescription, description)
+            assertEquals(expectedIsActive, isActive)
+            assertEquals(expectedPrice, price)
+            assertNotNull(createdAt)
+            assertTrue(updatedAt.isAfter(createdAt))
+            assertNull(deletedAt)
+        }
+    }
+
+    @Test
+    fun `given a plan, when execute change plan command, should update attributes`() {
+        // given
+        val expectedId = PlanId(IdUtils.uuid())
+        val expectedVersion = 1
+        val expectedName = "Plus"
+        val expectedDescription = "The best plan"
+        val expectedIsActive = true
+        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+
+        val actualPlan = Plan.newPlan(expectedId, expectedName, expectedDescription, expectedIsActive, expectedPrice)
+
+        val expectedNewName = "Premium"
+        val expectedNewDescription = "The best plan ever"
+        val expectedNewIsActive = false
+
+        // when
+        Thread.sleep(1)
+        actualPlan.execute(PlanCommand.ChangePlan(expectedNewName, expectedNewDescription, expectedNewIsActive))
+
+        // then
+        with(actualPlan) {
+            assertEquals(expectedId, id)
+            assertEquals(expectedVersion, version)
+            assertEquals(expectedNewName, name)
+            assertEquals(expectedNewDescription, description)
+            assertEquals(expectedNewIsActive, isActive)
+            assertEquals(expectedPrice, price)
+            assertNotNull(createdAt)
+            assertTrue(updatedAt.isAfter(createdAt))
+            assertNotNull(deletedAt)
+        }
+    }
+
+    @Test
+    fun `given a plan, when execute without commands, should do nothing`() {
+        // given
+        val expectedId = PlanId(IdUtils.uuid())
+        val expectedVersion = 0
+        val expectedName = "Plus"
+        val expectedDescription = "The best plan"
+        val expectedIsActive = true
+        val expectedPrice = MonetaryAmount(Fixture.currency(), 32.90)
+
+        val actualPlan = Plan.newPlan(expectedId, expectedName, expectedDescription, expectedIsActive, expectedPrice)
+
+        // when
+        actualPlan.execute()
+
+        // then
+        with(actualPlan) {
+            assertEquals(expectedId, id)
+            assertEquals(expectedVersion, version)
+            assertEquals(expectedName, name)
+            assertEquals(expectedDescription, description)
+            assertEquals(expectedIsActive, isActive)
+            assertEquals(expectedPrice, price)
+            assertNotNull(createdAt)
+            assertNotNull(updatedAt)
+            assertNull(deletedAt)
+        }
     }
 }
