@@ -1,6 +1,6 @@
-package com.lukinhasssss.assinatura.domain.account
+package com.lukinhasssss.assinatura.domain.account.iam
 
-import com.lukinhasssss.admin.catalogo.domain.Identifier
+import com.lukinhasssss.assinatura.domain.Identifier
 
 data class UserId(override val value: String) : Identifier {
     init {

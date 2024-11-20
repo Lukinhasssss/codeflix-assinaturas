@@ -1,8 +1,11 @@
-<div style="text-align: center;">  
-  <h1 align="center">🚀 Microserviço: Administração do Catálogo de Vídeos - Kotlin</h1>
+<div style="text-align: center;">
   <p align="center">
-    Microserviço referente ao backend da Administração do Catálogo de Vídeos<br />
-    Utilizando Kotlin, Clean Architecture, DDD, TDD e as boas práticas atuais de mercado
+    <img src="https://kotlinlang.org/docs/images/kotlin-logo.png"  width="300"  alt=""/>
+  </p>  
+  <h1 align="center">🚀 Microserviço: Assinatura com Kotlin</h1>
+  <p align="center">
+    Microserviço referente ao backend das assinaturas do Codeflix<br />
+    Utilizando Clean Architecture, DDD, TDD e as boas práticas atuais de mercado
   </p>
 </div>
 <br />

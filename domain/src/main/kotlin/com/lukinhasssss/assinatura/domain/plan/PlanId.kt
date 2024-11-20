@@ -1,6 +1,6 @@
 package com.lukinhasssss.assinatura.domain.plan
 
-import com.lukinhasssss.admin.catalogo.domain.Identifier
+import com.lukinhasssss.assinatura.domain.Identifier
 
 data class PlanId(override val value: String) : Identifier {
     init {

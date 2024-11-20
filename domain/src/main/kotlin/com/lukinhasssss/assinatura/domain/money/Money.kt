@@ -1,9 +1,9 @@
-package com.lukinhasssss.assinatura.domain.plan
+package com.lukinhasssss.assinatura.domain.money
 
-import com.lukinhasssss.admin.catalogo.domain.ValueObject
+import com.lukinhasssss.assinatura.domain.ValueObject
 import java.util.Currency
 
-data class MonetaryAmount(
+data class Money(
     val currency: Currency,
     val amount: Double,
 ) : ValueObject {

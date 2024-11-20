@@ -3,6 +3,7 @@ package com.lukinhasssss.assinatura.domain.account
 import com.lukinhasssss.assinatura.domain.Fixture
 import com.lukinhasssss.assinatura.domain.UnitTest
 import com.lukinhasssss.assinatura.domain.account.AccountEvent.AccountCreated
+import com.lukinhasssss.assinatura.domain.account.iam.UserId
 import com.lukinhasssss.assinatura.domain.exception.DomainException
 import com.lukinhasssss.assinatura.domain.person.Email
 import com.lukinhasssss.assinatura.domain.utils.IdUtils
