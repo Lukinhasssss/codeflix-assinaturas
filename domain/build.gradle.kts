@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.test
+
 plugins {
     id("java-conventions")
     kotlin("jvm") version Version.KOTLIN
@@ -13,6 +15,8 @@ repositories {
 
 dependencies {
     testImplementation("net.datafaker:datafaker:2.1.0")
+
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:${Version.KOTEST}")
 }
 
 configurations {

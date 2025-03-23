@@ -3,13 +3,12 @@ package com.lukinhasssss.assinatura.domain.person
 import com.lukinhasssss.assinatura.domain.Fixture
 import com.lukinhasssss.assinatura.domain.UnitTest
 import com.lukinhasssss.assinatura.domain.exception.DomainException
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 
-class EmailTest : UnitTest {
-    @Test
-    fun `given valid Email, when instantiate, should return ValueObject`() {
+class EmailTest : UnitTest, FunSpec({
+    test("given valid Email, when instantiate, should return ValueObject") {
         // given
         val expectedEmail = Fixture.Person.email()
 
@@ -17,11 +16,10 @@ class EmailTest : UnitTest {
         val actualEmail = Email(expectedEmail)
 
         // then
-        assertEquals(expectedEmail, actualEmail.value)
+        actualEmail.value shouldBe expectedEmail
     }
 
-    @Test
-    fun `given invalid email, when instantiate, should throws DomainException`() {
+    test("given invalid email, when instantiate, should throws DomainException") {
         // given
         val expectedErrorMessage = "'email' should be a valid email"
 
@@ -29,11 +27,11 @@ class EmailTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Email(expectedEmail)
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
-}
+})

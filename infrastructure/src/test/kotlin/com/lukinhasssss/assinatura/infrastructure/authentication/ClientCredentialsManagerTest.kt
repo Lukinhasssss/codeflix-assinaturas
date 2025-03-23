@@ -6,26 +6,21 @@ import com.lukinhasssss.assinatura.infrastructure.authentication.AuthenticationG
 import com.lukinhasssss.assinatura.infrastructure.authentication.AuthenticationGateway.RefreshTokenInput
 import com.lukinhasssss.assinatura.infrastructure.authentication.ClientCredentialsManager.ClientCredentials
 import com.lukinhasssss.assinatura.infrastructure.configuration.properties.KeycloakProperties
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 import io.mockk.every
-import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.test.util.ReflectionTestUtils
 
 @ExtendWith(MockKExtension::class)
-class ClientCredentialsManagerTest {
-    private val keycloakProperties = mockk<KeycloakProperties>()
+class ClientCredentialsManagerTest : FunSpec({
+    val keycloakProperties = mockk<KeycloakProperties>()
+    val authenticationGateway = mockk<AuthenticationGateway>()
+    val manager = ClientCredentialsManager(authenticationGateway, keycloakProperties)
 
-    private val authenticationGateway = mockk<AuthenticationGateway>()
-
-    @InjectMockKs
-    private lateinit var manager: ClientCredentialsManager
-
-    @Test
-    fun givenAValidAuthenticationResult_whenCallsRefresh_shouldCreateCredentials() {
+    test("given a valid authentication result, when calls refresh, should create credentials") {
         // given
         val expectedAccessToken = "accessToken"
         val expectedRefreshToken = "refreshToken"
@@ -43,11 +38,10 @@ class ClientCredentialsManagerTest {
         val actualToken = manager.retrieve()
 
         // then
-        assertEquals(expectedAccessToken, actualToken)
+        actualToken shouldBe expectedAccessToken
     }
 
-    @Test
-    fun givenPreviousAuthentication_whenCallsRefresh_shouldUpdateCredentials() {
+    test("given previous authentication, when calls refresh, should update credentials") {
         // given
         val expectedAccessToken = "accessToken"
         val expectedRefreshToken = "refreshToken"
@@ -68,12 +62,11 @@ class ClientCredentialsManagerTest {
         val actualCredentials = ReflectionTestUtils.getField(manager, "credentials") as ClientCredentials
 
         // then
-        assertEquals(expectedAccessToken, actualCredentials.accessToken)
-        assertEquals(expectedRefreshToken, actualCredentials.refreshToken)
+        actualCredentials.accessToken shouldBe expectedAccessToken
+        actualCredentials.refreshToken shouldBe expectedRefreshToken
     }
 
-    @Test
-    fun givenAnErrorFromRefreshToken_whenCallsRefresh_shouldFallbackToLogin() {
+    test("given an error from refresh token, when calls refresh, should fallback to login") {
         // given
         val expectedAccessToken = "accessToken"
         val expectedRefreshToken = "refreshToken"
@@ -97,7 +90,7 @@ class ClientCredentialsManagerTest {
         val actualCredentials = ReflectionTestUtils.getField(manager, "credentials") as ClientCredentials
 
         // then
-        assertEquals(expectedAccessToken, actualCredentials.accessToken)
-        assertEquals(expectedRefreshToken, actualCredentials.refreshToken)
+        actualCredentials.accessToken shouldBe expectedAccessToken
+        actualCredentials.refreshToken shouldBe expectedRefreshToken
     }
-}
+})

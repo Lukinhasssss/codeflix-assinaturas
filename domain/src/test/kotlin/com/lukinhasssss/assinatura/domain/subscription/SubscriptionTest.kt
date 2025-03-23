@@ -7,17 +7,16 @@ import com.lukinhasssss.assinatura.domain.plan.PlanId
 import com.lukinhasssss.assinatura.domain.subscription.status.SubscriptionStatus
 import com.lukinhasssss.assinatura.domain.utils.IdUtils
 import com.lukinhasssss.assinatura.domain.utils.InstantUtils
+import io.kotest.core.spec.style.FunSpec
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Test
 import java.time.Instant
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-class SubscriptionTest : UnitTest {
-    @Test
-    fun `given valid params, when calls new subscription, should instantiate`() {
+class SubscriptionTest : UnitTest, FunSpec({
+    test("given valid params, when calls new subscription, should instantiate") {
         // given
         val expectedId = SubscriptionId(IdUtils.uuid())
         val expectedVersion = 0
@@ -48,8 +47,7 @@ class SubscriptionTest : UnitTest {
         }
     }
 
-    @Test
-    fun `given valid params, when calls with, should instantiate`() {
+    test("given valid params, when calls with, should instantiate") {
         // given
         val expectedId = SubscriptionId(IdUtils.uuid())
         val expectedVersion = 0
@@ -93,4 +91,4 @@ class SubscriptionTest : UnitTest {
             assertTrue(domainEvents.isEmpty())
         }
     }
-}
+})

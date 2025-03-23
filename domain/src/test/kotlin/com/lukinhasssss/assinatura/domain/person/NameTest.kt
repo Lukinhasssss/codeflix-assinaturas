@@ -3,13 +3,12 @@ package com.lukinhasssss.assinatura.domain.person
 import com.lukinhasssss.assinatura.domain.Fixture
 import com.lukinhasssss.assinatura.domain.UnitTest
 import com.lukinhasssss.assinatura.domain.exception.DomainException
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 
-class NameTest : UnitTest {
-    @Test
-    fun `given valid Name, when instantiate, should return ValueObject`() {
+class NameTest : UnitTest, FunSpec({
+    test("given valid Name, when instantiate, should return ValueObject") {
         // given
         val expectedFirstName = Fixture.Person.firstName()
         val expectedLastName = Fixture.Person.lastName()
@@ -18,12 +17,11 @@ class NameTest : UnitTest {
         val actualName = Name(expectedFirstName, expectedLastName)
 
         // then
-        assertEquals(expectedFirstName, actualName.firstName)
-        assertEquals(expectedLastName, actualName.lastName)
+        actualName.firstName shouldBe expectedFirstName
+        actualName.lastName shouldBe expectedLastName
     }
 
-    @Test
-    fun `given empty firstName, when instantiate, should throws DomainException`() {
+    test("given empty firstName, when instantiate, should throws DomainException") {
         // given
         val expectedErrorMessage = "'firstName' should not be empty"
 
@@ -32,16 +30,15 @@ class NameTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Name(expectedFirstName, expectedLastName)
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given empty lastName, when instantiate, should throws DomainException`() {
+    test("given empty lastName, when instantiate, should throws DomainException") {
         // given
         val expectedErrorMessage = "'lastName' should not be empty"
 
@@ -49,12 +46,12 @@ class NameTest : UnitTest {
         val expectedLastName = ""
 
         // when
-        val expectedError =
-            assertThrows<DomainException> {
+        val actualError =
+            shouldThrow<DomainException> {
                 Name(expectedFirstName, expectedLastName)
             }
 
         // then
-        assertEquals(expectedErrorMessage, expectedError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
-}
+})

@@ -6,17 +6,17 @@ import com.lukinhasssss.assinatura.domain.exception.DomainException
 import com.lukinhasssss.assinatura.domain.money.Money
 import com.lukinhasssss.assinatura.domain.utils.IdUtils
 import com.lukinhasssss.assinatura.domain.utils.InstantUtils
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Assertions.assertNull
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
 import java.time.LocalDateTime
 
-class PlanTest : UnitTest {
-    @Test
-    fun `given valid params, when calls new plan, should instantiate`() {
+class PlanTest : UnitTest, FunSpec({
+    test("given valid params, when calls new plan, should instantiate") {
         // given
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 0
@@ -37,20 +37,19 @@ class PlanTest : UnitTest {
 
         // then
         with(actualPlan) {
-            assertEquals(expectedId, id)
-            assertEquals(expectedVersion, version)
-            assertEquals(expectedName, name)
-            assertEquals(expectedDescription, description)
-            assertEquals(expectedIsActive, isActive)
-            assertEquals(expectedPrice, price)
-            assertNotNull(createdAt)
-            assertNotNull(updatedAt)
-            assertNull(deletedAt)
+            id shouldBe expectedId
+            version shouldBe expectedVersion
+            name shouldBe expectedName
+            description shouldBe expectedDescription
+            isActive shouldBe expectedIsActive
+            price shouldBe expectedPrice
+            createdAt.shouldNotBeNull()
+            updatedAt.shouldNotBeNull()
+            deletedAt.shouldBeNull()
         }
     }
 
-    @Test
-    fun `given valid params, when calls with, should instantiate`() {
+    test("given valid params, when calls with, should instantiate") {
         // given
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 0
@@ -78,23 +77,22 @@ class PlanTest : UnitTest {
 
         // then
         with(actualPlan) {
-            assertEquals(expectedId, id)
-            assertEquals(expectedVersion, version)
-            assertEquals(expectedName, name)
-            assertEquals(expectedDescription, description)
-            assertEquals(expectedIsActive, isActive)
-            assertEquals(expectedPrice, price)
-            assertEquals(expectedCreatedAt, createdAt)
-            assertEquals(expectedUpdatedAt, updatedAt)
-            assertEquals(expectedDeletedAt, deletedAt)
+            id shouldBe expectedId
+            version shouldBe expectedVersion
+            name shouldBe expectedName
+            description shouldBe expectedDescription
+            isActive shouldBe expectedIsActive
+            price shouldBe expectedPrice
+            createdAt shouldBe expectedCreatedAt
+            updatedAt shouldBe expectedUpdatedAt
+            deletedAt shouldBe expectedDeletedAt
         }
     }
 
-    @Test
-    fun `given an invalid planId, when call with, should return error`() {
+    test("given an invalid planId, when call with, should return error") {
         // given
         val expectedErrorMessage = "'planId' should not be empty"
-        val expecetdVersion = 0
+        val expectedVersion = 0
         val expectedName = "Plus"
         val expectedDescription = "The best plan"
         val expectedIsActive = true
@@ -105,10 +103,10 @@ class PlanTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Plan.with(
                     PlanId(""),
-                    expecetdVersion,
+                    expectedVersion,
                     expectedName,
                     expectedDescription,
                     expectedIsActive,
@@ -120,14 +118,12 @@ class PlanTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given an invalid name, when call with, should return error`() {
+    test("given an invalid name, when call with, should return error") {
         // given
         val expectedErrorMessage = "'name' should not be empty"
-
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 0
         val expectedName = ""
@@ -140,7 +136,7 @@ class PlanTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Plan.with(
                     expectedId,
                     expectedVersion,
@@ -155,14 +151,12 @@ class PlanTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given a name greater than 100 characters, when call with, should return error`() {
+    test("given a name greater than 100 characters, when call with, should return error") {
         // given
         val expectedErrorMessage = "'name' should not be greater than 100 characters"
-
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 0
         val expectedName = "a".repeat(101)
@@ -175,7 +169,7 @@ class PlanTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Plan.with(
                     expectedId,
                     expectedVersion,
@@ -190,14 +184,12 @@ class PlanTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given an invalid description, when call with, should return error`() {
+    test("given an invalid description, when call with, should return error") {
         // given
         val expectedErrorMessage = "'description' should not be empty"
-
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 0
         val expectedName = "Plus"
@@ -210,7 +202,7 @@ class PlanTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Plan.with(
                     expectedId,
                     expectedVersion,
@@ -225,14 +217,12 @@ class PlanTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given a description greater than 500 characters, when call with, should return error`() {
+    test("given a description greater than 500 characters, when call with, should return error") {
         // given
         val expectedErrorMessage = "'description' should not be greater than 500 characters"
-
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 0
         val expectedName = "Plus"
@@ -245,7 +235,7 @@ class PlanTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Plan.with(
                     expectedId,
                     expectedVersion,
@@ -260,11 +250,10 @@ class PlanTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given isActive is not informed, when call with, should return false`() {
+    test("given isActive is not informed, when call with, should return false") {
         // given
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 0
@@ -290,11 +279,10 @@ class PlanTest : UnitTest {
             )
 
         // then
-        assertEquals(expectedIsActive, actualPlan.isActive)
+        actualPlan.isActive shouldBe expectedIsActive
     }
 
-    @Test
-    fun `given 0 as price, when call with, should return OK`() {
+    test("given 0 as price, when call with, should return OK") {
         // given
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 0
@@ -321,14 +309,12 @@ class PlanTest : UnitTest {
             )
 
         // then
-        assertEquals(expectedPrice, actualPlan.price)
+        actualPlan.price shouldBe expectedPrice
     }
 
-    @Test
-    fun `given a negative price, when call with, should return error`() {
+    test("given a negative price, when call with, should return error") {
         // given
         val expectedErrorMessage = "'amount' should be greater than or equal to 0"
-
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 0
         val expectedName = "Plus"
@@ -340,7 +326,7 @@ class PlanTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Plan.with(
                     expectedId,
                     expectedVersion,
@@ -355,11 +341,10 @@ class PlanTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given deletedAt is not informed, when call with, should return null`() {
+    test("given deletedAt is not informed, when call with, should return null") {
         // given
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 0
@@ -385,11 +370,10 @@ class PlanTest : UnitTest {
             )
 
         // then
-        assertEquals(expectedDeletedAt, actualPlan.deletedAt)
+        actualPlan.deletedAt shouldBe expectedDeletedAt
     }
 
-    @Test
-    fun `given active plan, when execute inactivate command, should inactivate`() {
+    test("given active plan, when execute inactivate command, should inactivate") {
         // given
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 1
@@ -399,8 +383,8 @@ class PlanTest : UnitTest {
         val expectedPrice = Money(Fixture.currency(), 32.90)
 
         val actualPlan = Plan.newPlan(expectedId, expectedName, expectedDescription, true, expectedPrice)
-        assertTrue(actualPlan.isActive)
-        assertNull(actualPlan.deletedAt)
+        actualPlan.isActive.shouldBeTrue()
+        actualPlan.deletedAt.shouldBeNull()
 
         // when
         Thread.sleep(1)
@@ -408,20 +392,19 @@ class PlanTest : UnitTest {
 
         // then
         with(actualPlan) {
-            assertEquals(expectedId, id)
-            assertEquals(expectedVersion, version)
-            assertEquals(expectedName, name)
-            assertEquals(expectedDescription, description)
-            assertEquals(expectedIsActive, isActive)
-            assertEquals(expectedPrice, price)
-            assertNotNull(createdAt)
-            assertTrue(updatedAt.isAfter(createdAt))
-            assertNotNull(deletedAt)
+            id shouldBe expectedId
+            version shouldBe expectedVersion
+            name shouldBe expectedName
+            description shouldBe expectedDescription
+            isActive shouldBe expectedIsActive
+            price shouldBe expectedPrice
+            createdAt.shouldNotBeNull()
+            updatedAt.isAfter(createdAt).shouldBeTrue()
+            deletedAt.shouldNotBeNull()
         }
     }
 
-    @Test
-    fun `given inactive plan, when execute activate command, should activate`() {
+    test("given inactive plan, when execute activate command, should activate") {
         // given
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 1
@@ -431,8 +414,8 @@ class PlanTest : UnitTest {
         val expectedPrice = Money(Fixture.currency(), 32.90)
 
         val actualPlan = Plan.newPlan(expectedId, expectedName, expectedDescription, false, expectedPrice)
-        assertTrue(!actualPlan.isActive)
-        assertNotNull(actualPlan.deletedAt)
+        actualPlan.isActive.shouldBeFalse()
+        actualPlan.deletedAt.shouldNotBeNull()
 
         // when
         Thread.sleep(1)
@@ -440,20 +423,19 @@ class PlanTest : UnitTest {
 
         // then
         with(actualPlan) {
-            assertEquals(expectedId, id)
-            assertEquals(expectedVersion, version)
-            assertEquals(expectedName, name)
-            assertEquals(expectedDescription, description)
-            assertEquals(expectedIsActive, isActive)
-            assertEquals(expectedPrice, price)
-            assertNotNull(createdAt)
-            assertTrue(updatedAt.isAfter(createdAt))
-            assertNull(deletedAt)
+            id shouldBe expectedId
+            version shouldBe expectedVersion
+            name shouldBe expectedName
+            description shouldBe expectedDescription
+            isActive shouldBe expectedIsActive
+            price shouldBe expectedPrice
+            createdAt.shouldNotBeNull()
+            updatedAt.isAfter(createdAt).shouldBeTrue()
+            deletedAt.shouldBeNull()
         }
     }
 
-    @Test
-    fun `given a plan, when execute change plan command, should update attributes`() {
+    test("given a plan, when execute change plan command, should update attributes") {
         // given
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 1
@@ -474,20 +456,19 @@ class PlanTest : UnitTest {
 
         // then
         with(actualPlan) {
-            assertEquals(expectedId, id)
-            assertEquals(expectedVersion, version)
-            assertEquals(expectedNewName, name)
-            assertEquals(expectedNewDescription, description)
-            assertEquals(expectedNewIsActive, isActive)
-            assertEquals(expectedPrice, price)
-            assertNotNull(createdAt)
-            assertTrue(updatedAt.isAfter(createdAt))
-            assertNotNull(deletedAt)
+            id shouldBe expectedId
+            version shouldBe expectedVersion
+            name shouldBe expectedNewName
+            description shouldBe expectedNewDescription
+            isActive shouldBe expectedNewIsActive
+            price shouldBe expectedPrice
+            createdAt.shouldNotBeNull()
+            updatedAt.isAfter(createdAt).shouldBeTrue()
+            deletedAt.shouldNotBeNull()
         }
     }
 
-    @Test
-    fun `given a plan, when execute without commands, should do nothing`() {
+    test("given a plan, when execute without commands, should do nothing") {
         // given
         val expectedId = PlanId(IdUtils.uuid())
         val expectedVersion = 0
@@ -503,15 +484,15 @@ class PlanTest : UnitTest {
 
         // then
         with(actualPlan) {
-            assertEquals(expectedId, id)
-            assertEquals(expectedVersion, version)
-            assertEquals(expectedName, name)
-            assertEquals(expectedDescription, description)
-            assertEquals(expectedIsActive, isActive)
-            assertEquals(expectedPrice, price)
-            assertNotNull(createdAt)
-            assertNotNull(updatedAt)
-            assertNull(deletedAt)
+            id shouldBe expectedId
+            version shouldBe expectedVersion
+            name shouldBe expectedName
+            description shouldBe expectedDescription
+            isActive shouldBe expectedIsActive
+            price shouldBe expectedPrice
+            createdAt.shouldNotBeNull()
+            updatedAt.shouldNotBeNull()
+            deletedAt.shouldBeNull()
         }
     }
-}
+})
