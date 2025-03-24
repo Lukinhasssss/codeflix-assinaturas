@@ -19,7 +19,7 @@ class Subscription private constructor(
     val lastRenewDate: Instant? = null,
     val lastTransactionId: String? = null,
     val createdAt: Instant = InstantUtils.now(),
-    val updatedAt: Instant = InstantUtils.now(),
+    var updatedAt: Instant = InstantUtils.now(),
 ) : AggregateRoot<SubscriptionId>(subscriptionId) {
     var status: SubscriptionStatus = SubscriptionStatus.create(status, this)
         private set
@@ -68,5 +68,21 @@ class Subscription private constructor(
                 updatedAt = updatedAt,
             )
         }
+    }
+
+    fun execute(vararg commands: SubscriptionCommand) {
+        if (commands.isEmpty()) return
+
+        commands.forEach { command ->
+            when (command) {
+                is SubscriptionCommand.ChangeStatus -> apply(command)
+            }
+        }
+
+        updatedAt = InstantUtils.now()
+    }
+
+    private fun apply(command: SubscriptionCommand.ChangeStatus) {
+        status = command.status
     }
 }
