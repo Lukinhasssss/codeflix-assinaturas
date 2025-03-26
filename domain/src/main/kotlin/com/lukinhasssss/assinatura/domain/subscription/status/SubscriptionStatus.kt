@@ -71,6 +71,10 @@ data class TrailingSubscriptionStatus(
     override fun cancel() {
         subscription.execute(SubscriptionCommand.ChangeStatus(CanceledSubscriptionStatus(subscription)))
     }
+
+    override fun equals(other: Any?) = other is TrailingSubscriptionStatus
+
+    override fun hashCode(): Int = javaClass.hashCode()
 }
 
 data class IncompleteSubscriptionStatus(
@@ -87,6 +91,10 @@ data class IncompleteSubscriptionStatus(
     override fun cancel() {
         subscription.execute(SubscriptionCommand.ChangeStatus(CanceledSubscriptionStatus(subscription)))
     }
+
+    override fun equals(other: Any?) = other is IncompleteSubscriptionStatus
+
+    override fun hashCode(): Int = javaClass.hashCode()
 }
 
 data class ActiveSubscriptionStatus(
@@ -103,6 +111,10 @@ data class ActiveSubscriptionStatus(
     override fun cancel() {
         subscription.execute(SubscriptionCommand.ChangeStatus(CanceledSubscriptionStatus(subscription)))
     }
+
+    override fun equals(other: Any?) = other is ActiveSubscriptionStatus
+
+    override fun hashCode(): Int = javaClass.hashCode()
 }
 
 data class CanceledSubscriptionStatus(
@@ -119,4 +131,8 @@ data class CanceledSubscriptionStatus(
     override fun active() {
         throw DomainException.with("Subscription with status canceled can't be changed to active")
     }
+
+    override fun equals(other: Any?) = other is CanceledSubscriptionStatus
+
+    override fun hashCode(): Int = javaClass.hashCode()
 }
