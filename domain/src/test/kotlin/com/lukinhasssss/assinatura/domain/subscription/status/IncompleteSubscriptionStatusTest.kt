@@ -73,16 +73,16 @@ class IncompleteSubscriptionStatusTest : UnitTest, FunSpec({
         expectedSubscription.status::class shouldBeSameInstanceAs expectedStatusClass
     }
 
-    test("given incomplete status, when calls trailing, should throw DomainException") {
+    test("given incomplete status, when calls trialing, should throw DomainException") {
         // given
-        val expectedErrorMessage = "Subscription with status incomplete can't be changed to trailing"
+        val expectedErrorMessage = "Subscription with status incomplete can't be changed to trialing"
         val expectedStatusClass = IncompleteSubscriptionStatus::class
         val expectedSubscription = incompleteSubscription()
 
         val target = IncompleteSubscriptionStatus(expectedSubscription)
 
         // when
-        val actualError = shouldThrow<DomainException> { target.trailing() }
+        val actualError = shouldThrow<DomainException> { target.trialing() }
 
         // then
         actualError.message shouldBe expectedErrorMessage

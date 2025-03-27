@@ -12,10 +12,10 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 
 class SubscriptionStatusTest : UnitTest, FunSpec({
-    test("given trailing status, when calls create, should instantiate TrailingSubscriptionStatus") {
+    test("given trialing status, when calls create, should instantiate TrialingSubscriptionStatus") {
         // given
-        val expectedStatus = "trailing"
-        val expectedStatusClass = TrailingSubscriptionStatus::class
+        val expectedStatus = "trialing"
+        val expectedStatusClass = TrialingSubscriptionStatus::class
         val expectedSubscription =
             Subscription.new(
                 anId = SubscriptionId("SUB123"),

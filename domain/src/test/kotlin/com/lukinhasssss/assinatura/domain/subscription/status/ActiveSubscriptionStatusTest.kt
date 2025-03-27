@@ -73,16 +73,16 @@ class ActiveSubscriptionStatusTest : UnitTest, FunSpec({
         expectedSubscription.status::class shouldBeSameInstanceAs expectedStatusClass
     }
 
-    test("given active status, when calls trailing, should throw DomainException") {
+    test("given active status, when calls trialing, should throw DomainException") {
         // given
-        val expectedErrorMessage = "Subscription with status active can't be changed to trailing"
+        val expectedErrorMessage = "Subscription with status active can't be changed to trialing"
         val expectedStatusClass = ActiveSubscriptionStatus::class
         val expectedSubscription = activeSubscription()
 
         val target = ActiveSubscriptionStatus(expectedSubscription)
 
         // when
-        val actualError = shouldThrow<DomainException> { target.trailing() }
+        val actualError = shouldThrow<DomainException> { target.trialing() }
 
         // then
         actualError.message shouldBe expectedErrorMessage

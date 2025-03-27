@@ -79,16 +79,16 @@ class CanceledSubscriptionStatusTest : UnitTest, FunSpec({
         expectedSubscription.status::class shouldBeSameInstanceAs expectedStatusClass
     }
 
-    test("given canceled status, when calls trailing, should throw DomainException") {
+    test("given canceled status, when calls trialing, should throw DomainException") {
         // given
-        val expectedErrorMessage = "Subscription with status canceled can't be changed to trailing"
+        val expectedErrorMessage = "Subscription with status canceled can't be changed to trialing"
         val expectedStatusClass = CanceledSubscriptionStatus::class
         val expectedSubscription = canceledSubscription()
 
         val target = CanceledSubscriptionStatus(expectedSubscription)
 
         // when
-        val actualError = shouldThrow<DomainException> { target.trailing() }
+        val actualError = shouldThrow<DomainException> { target.trialing() }
 
         // then
         actualError.message shouldBe expectedErrorMessage
