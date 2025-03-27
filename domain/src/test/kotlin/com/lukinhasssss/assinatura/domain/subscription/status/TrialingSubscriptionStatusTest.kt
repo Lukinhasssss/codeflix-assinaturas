@@ -9,12 +9,12 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 
-class TrailingSubscriptionStatusTest : UnitTest, FunSpec({
+class TrialingSubscriptionStatusTest : UnitTest, FunSpec({
     test("given two instances, when compared, should be equals") {
         // given
         val expectedEquals = true
-        val one = TrailingSubscriptionStatus(Subscription.new(SubscriptionId("SUB123"), AccountId("ACC123"), Fixture.Plans.plus()))
-        val another = TrailingSubscriptionStatus(Subscription.new(SubscriptionId("SUB456"), AccountId("ACC456"), Fixture.Plans.plus()))
+        val one = TrialingSubscriptionStatus(Subscription.new(SubscriptionId("SUB123"), AccountId("ACC123"), Fixture.Plans.plus()))
+        val another = TrialingSubscriptionStatus(Subscription.new(SubscriptionId("SUB456"), AccountId("ACC456"), Fixture.Plans.plus()))
 
         // when
         val actualEquals = one == another
@@ -25,14 +25,14 @@ class TrailingSubscriptionStatusTest : UnitTest, FunSpec({
 
     test("given two instances, when calls hashCode, should be equals") {
         // given
-        val one = TrailingSubscriptionStatus(Subscription.new(SubscriptionId("SUB123"), AccountId("ACC123"), Fixture.Plans.plus()))
-        val another = TrailingSubscriptionStatus(Subscription.new(SubscriptionId("SUB456"), AccountId("ACC456"), Fixture.Plans.plus()))
+        val one = TrialingSubscriptionStatus(Subscription.new(SubscriptionId("SUB123"), AccountId("ACC123"), Fixture.Plans.plus()))
+        val another = TrialingSubscriptionStatus(Subscription.new(SubscriptionId("SUB456"), AccountId("ACC456"), Fixture.Plans.plus()))
 
         // then
         one.hashCode() shouldBe another.hashCode()
     }
 
-    test("given trailing status, when calls active, should transit to active status") {
+    test("given trialing status, when calls active, should transit to active status") {
         // given
         val expectedStatusClass = ActiveSubscriptionStatus::class
         val expectedSubscription =
@@ -41,7 +41,7 @@ class TrailingSubscriptionStatusTest : UnitTest, FunSpec({
                 anAccountId = AccountId("ACC123"),
                 selectedPlan = Fixture.Plans.plus(),
             )
-        val target = TrailingSubscriptionStatus(expectedSubscription)
+        val target = TrialingSubscriptionStatus(expectedSubscription)
 
         // when
         target.active()
@@ -50,7 +50,7 @@ class TrailingSubscriptionStatusTest : UnitTest, FunSpec({
         expectedSubscription.status::class shouldBeSameInstanceAs expectedStatusClass
     }
 
-    test("given trailing status, when calls cancel, should transit to canceled status") {
+    test("given trialing status, when calls cancel, should transit to canceled status") {
         // given
         val expectedStatusClass = CanceledSubscriptionStatus::class
         val expectedSubscription =
@@ -59,7 +59,7 @@ class TrailingSubscriptionStatusTest : UnitTest, FunSpec({
                 anAccountId = AccountId("ACC123"),
                 selectedPlan = Fixture.Plans.plus(),
             )
-        val target = TrailingSubscriptionStatus(expectedSubscription)
+        val target = TrialingSubscriptionStatus(expectedSubscription)
 
         // when
         target.cancel()
@@ -68,7 +68,7 @@ class TrailingSubscriptionStatusTest : UnitTest, FunSpec({
         expectedSubscription.status::class shouldBeSameInstanceAs expectedStatusClass
     }
 
-    test("given trailing status, when calls incomplete, should transit to incomplete status") {
+    test("given trialing status, when calls incomplete, should transit to incomplete status") {
         // given
         val expectedStatusClass = IncompleteSubscriptionStatus::class
         val expectedSubscription =
@@ -77,7 +77,7 @@ class TrailingSubscriptionStatusTest : UnitTest, FunSpec({
                 anAccountId = AccountId("ACC123"),
                 selectedPlan = Fixture.Plans.plus(),
             )
-        val target = TrailingSubscriptionStatus(expectedSubscription)
+        val target = TrialingSubscriptionStatus(expectedSubscription)
 
         // when
         target.incomplete()
@@ -86,19 +86,19 @@ class TrailingSubscriptionStatusTest : UnitTest, FunSpec({
         expectedSubscription.status::class shouldBeSameInstanceAs expectedStatusClass
     }
 
-    test("given trailing status, when calls trailing, should do nothing") {
+    test("given trialing status, when calls trialing, should do nothing") {
         // given
-        val expectedStatusClass = TrailingSubscriptionStatus::class
+        val expectedStatusClass = TrialingSubscriptionStatus::class
         val expectedSubscription =
             Subscription.new(
                 anId = SubscriptionId("SUB123"),
                 anAccountId = AccountId("ACC123"),
                 selectedPlan = Fixture.Plans.plus(),
             )
-        val target = TrailingSubscriptionStatus(expectedSubscription)
+        val target = TrialingSubscriptionStatus(expectedSubscription)
 
         // when
-        target.trailing()
+        target.trialing()
 
         // then
         expectedSubscription.status::class shouldBeSameInstanceAs expectedStatusClass

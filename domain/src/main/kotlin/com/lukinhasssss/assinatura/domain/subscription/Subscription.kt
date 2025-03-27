@@ -17,7 +17,7 @@ class Subscription private constructor(
     status: String,
     val dueDate: LocalDate,
     val lastRenewDate: Instant? = null,
-    val lastTransactionId: String? = null,
+    var lastTransactionId: String? = null,
     val createdAt: Instant = InstantUtils.now(),
     var updatedAt: Instant = InstantUtils.now(),
 ) : AggregateRoot<SubscriptionId>(subscriptionId) {
@@ -36,7 +36,7 @@ class Subscription private constructor(
                 subscriptionId = anId,
                 accountId = anAccountId,
                 planId = selectedPlan.id,
-                status = SubscriptionStatus.TRAILING,
+                status = SubscriptionStatus.TRIALING,
                 dueDate = LocalDate.now().plusMonths(1),
                 createdAt = now,
                 updatedAt = now,
@@ -75,6 +75,7 @@ class Subscription private constructor(
 
         commands.forEach { command ->
             when (command) {
+                is SubscriptionCommand.IncompleteSubscription -> apply(command)
                 is SubscriptionCommand.ChangeStatus -> apply(command)
             }
         }
@@ -82,7 +83,12 @@ class Subscription private constructor(
         updatedAt = InstantUtils.now()
     }
 
+    private fun apply(command: SubscriptionCommand.IncompleteSubscription) {
+        status.incomplete()
+        lastTransactionId = command.aTransactionId
+    }
+
     private fun apply(command: SubscriptionCommand.ChangeStatus) {
-        status = command.status
+        status = SubscriptionStatus.create(command.status, this)
     }
 }

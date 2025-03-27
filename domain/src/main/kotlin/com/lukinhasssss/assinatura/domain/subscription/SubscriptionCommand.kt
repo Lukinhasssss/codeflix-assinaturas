@@ -1,9 +1,22 @@
 package com.lukinhasssss.assinatura.domain.subscription
 
-import com.lukinhasssss.assinatura.domain.subscription.status.SubscriptionStatus
+import com.lukinhasssss.assinatura.domain.AssertionConcern
 
-sealed interface SubscriptionCommand {
+sealed interface SubscriptionCommand : AssertionConcern {
+    data class IncompleteSubscription(
+        val aReason: String,
+        val aTransactionId: String,
+    ) : SubscriptionCommand {
+        init {
+            assertArgumentNotEmpty(aTransactionId, "'transactionId' should not be empty")
+        }
+    }
+
     data class ChangeStatus(
-        val status: SubscriptionStatus,
-    ) : SubscriptionCommand
+        val status: String,
+    ) : SubscriptionCommand {
+        init {
+            assertArgumentNotEmpty(status, "'status' should not be empty")
+        }
+    }
 }

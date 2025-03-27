@@ -3,10 +3,13 @@ package com.lukinhasssss.assinatura.domain.subscription.status
 import com.lukinhasssss.assinatura.domain.exception.DomainException
 import com.lukinhasssss.assinatura.domain.subscription.Subscription
 import com.lukinhasssss.assinatura.domain.subscription.SubscriptionCommand
+import com.lukinhasssss.assinatura.domain.subscription.status.SubscriptionStatus.Companion.ACTIVE
+import com.lukinhasssss.assinatura.domain.subscription.status.SubscriptionStatus.Companion.CANCELED
+import com.lukinhasssss.assinatura.domain.subscription.status.SubscriptionStatus.Companion.INCOMPLETE
 
 sealed interface SubscriptionStatus {
     companion object {
-        const val TRAILING = "trailing"
+        const val TRIALING = "trialing"
         const val INCOMPLETE = "incomplete"
         const val ACTIVE = "active"
         const val CANCELED = "canceled"
@@ -16,7 +19,7 @@ sealed interface SubscriptionStatus {
             aSubscription: Subscription,
         ): SubscriptionStatus =
             when (status) {
-                TRAILING -> TrailingSubscriptionStatus(aSubscription)
+                TRIALING -> TrialingSubscriptionStatus(aSubscription)
                 INCOMPLETE -> IncompleteSubscriptionStatus(aSubscription)
                 ACTIVE -> ActiveSubscriptionStatus(aSubscription)
                 CANCELED -> CanceledSubscriptionStatus(aSubscription)
@@ -26,13 +29,13 @@ sealed interface SubscriptionStatus {
 
     fun value() =
         when (this) {
-            is TrailingSubscriptionStatus -> TRAILING
+            is TrialingSubscriptionStatus -> TRIALING
             is IncompleteSubscriptionStatus -> INCOMPLETE
             is ActiveSubscriptionStatus -> ACTIVE
             is CanceledSubscriptionStatus -> CANCELED
         }
 
-    fun trailing()
+    fun trialing()
 
     fun incomplete()
 
@@ -48,7 +51,7 @@ sealed interface SubscriptionStatus {
  */
 
 sealed class AbstractSubscriptionStatus : SubscriptionStatus {
-    override fun trailing() {}
+    override fun trialing() {}
 
     override fun incomplete() {}
 
@@ -57,22 +60,22 @@ sealed class AbstractSubscriptionStatus : SubscriptionStatus {
     override fun cancel() {}
 }
 
-data class TrailingSubscriptionStatus(
+data class TrialingSubscriptionStatus(
     val subscription: Subscription,
 ) : AbstractSubscriptionStatus() {
     override fun incomplete() {
-        subscription.execute(SubscriptionCommand.ChangeStatus(IncompleteSubscriptionStatus(subscription)))
+        subscription.execute(SubscriptionCommand.ChangeStatus(INCOMPLETE))
     }
 
     override fun active() {
-        subscription.execute(SubscriptionCommand.ChangeStatus(ActiveSubscriptionStatus(subscription)))
+        subscription.execute(SubscriptionCommand.ChangeStatus(ACTIVE))
     }
 
     override fun cancel() {
-        subscription.execute(SubscriptionCommand.ChangeStatus(CanceledSubscriptionStatus(subscription)))
+        subscription.execute(SubscriptionCommand.ChangeStatus(CANCELED))
     }
 
-    override fun equals(other: Any?) = other is TrailingSubscriptionStatus
+    override fun equals(other: Any?) = other is TrialingSubscriptionStatus
 
     override fun hashCode(): Int = javaClass.hashCode()
 }
@@ -80,16 +83,16 @@ data class TrailingSubscriptionStatus(
 data class IncompleteSubscriptionStatus(
     val subscription: Subscription,
 ) : AbstractSubscriptionStatus() {
-    override fun trailing() {
-        throw DomainException.with("Subscription with status incomplete can't be changed to trailing")
+    override fun trialing() {
+        throw DomainException.with("Subscription with status incomplete can't be changed to trialing")
     }
 
     override fun active() {
-        subscription.execute(SubscriptionCommand.ChangeStatus(ActiveSubscriptionStatus(subscription)))
+        subscription.execute(SubscriptionCommand.ChangeStatus(ACTIVE))
     }
 
     override fun cancel() {
-        subscription.execute(SubscriptionCommand.ChangeStatus(CanceledSubscriptionStatus(subscription)))
+        subscription.execute(SubscriptionCommand.ChangeStatus(CANCELED))
     }
 
     override fun equals(other: Any?) = other is IncompleteSubscriptionStatus
@@ -100,16 +103,16 @@ data class IncompleteSubscriptionStatus(
 data class ActiveSubscriptionStatus(
     val subscription: Subscription,
 ) : AbstractSubscriptionStatus() {
-    override fun trailing() {
-        throw DomainException.with("Subscription with status active can't be changed to trailing")
+    override fun trialing() {
+        throw DomainException.with("Subscription with status active can't be changed to trialing")
     }
 
     override fun incomplete() {
-        subscription.execute(SubscriptionCommand.ChangeStatus(IncompleteSubscriptionStatus(subscription)))
+        subscription.execute(SubscriptionCommand.ChangeStatus(INCOMPLETE))
     }
 
     override fun cancel() {
-        subscription.execute(SubscriptionCommand.ChangeStatus(CanceledSubscriptionStatus(subscription)))
+        subscription.execute(SubscriptionCommand.ChangeStatus(CANCELED))
     }
 
     override fun equals(other: Any?) = other is ActiveSubscriptionStatus
@@ -120,8 +123,8 @@ data class ActiveSubscriptionStatus(
 data class CanceledSubscriptionStatus(
     val subscription: Subscription,
 ) : AbstractSubscriptionStatus() {
-    override fun trailing() {
-        throw DomainException.with("Subscription with status canceled can't be changed to trailing")
+    override fun trialing() {
+        throw DomainException.with("Subscription with status canceled can't be changed to trialing")
     }
 
     override fun incomplete() {
