@@ -189,4 +189,53 @@ class SubscriptionTest : UnitTest, FunSpec({
             // domainEvents.first() shouldBeSameInstanceAs SubscriptionEvent.SubscriptionRenewed::class
         }
     }
+
+    test("given trialing subscription, when execute CancelCommand, should transit to canceled state") {
+        // given
+        val expectedId = SubscriptionId(IdUtils.uuid())
+        val expectedVersion = 0
+        val expectedAccountId = AccountId(IdUtils.uuid())
+        val expectedPlanId = PlanId(IdUtils.uuid())
+        val expectedStatus = SubscriptionStatus.CANCELED
+        val expectedDueDate = LocalDate.now().plusMonths(1)
+        val expectedLastRenewDate: Instant = InstantUtils.now()
+        val expectedLastTransactionId = IdUtils.uuid()
+        val expectedCreatedAt = InstantUtils.now()
+        val expectedUpdatedAt = InstantUtils.now()
+        val expectedEventsCount = 1
+
+        val actualSubscription =
+            Subscription.with(
+                subscriptionId = expectedId,
+                version = expectedVersion,
+                accountId = expectedAccountId,
+                planId = expectedPlanId,
+                status = SubscriptionStatus.TRIALING,
+                dueDate = expectedDueDate,
+                lastRenewDate = expectedLastRenewDate,
+                lastTransactionId = expectedLastTransactionId,
+                createdAt = expectedCreatedAt,
+                updatedAt = expectedUpdatedAt,
+            )
+
+        // when
+        actualSubscription.execute(SubscriptionCommand.CancelSubscription())
+
+        // then
+        with(actualSubscription) {
+            this.shouldNotBeNull()
+            id shouldBe expectedId
+            version shouldBe expectedVersion
+            accountId shouldBe expectedAccountId
+            planId shouldBe expectedPlanId
+            status.value() shouldBe expectedStatus
+            dueDate shouldBe expectedDueDate
+            lastRenewDate.shouldNotBeNull()
+            lastTransactionId shouldBe expectedLastTransactionId
+            createdAt shouldBe expectedCreatedAt
+            updatedAt shouldBeAfter expectedUpdatedAt
+            domainEvents.size shouldBe expectedEventsCount
+            // domainEvents.first() shouldBeSameInstanceAs SubscriptionEvent.SubscriptionCanceled::class
+        }
+    }
 })
