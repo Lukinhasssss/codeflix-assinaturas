@@ -15,8 +15,8 @@ class Subscription private constructor(
     val accountId: AccountId,
     val planId: PlanId,
     status: String,
-    val dueDate: LocalDate,
-    val lastRenewDate: Instant? = null,
+    var dueDate: LocalDate,
+    var lastRenewDate: Instant? = null,
     var lastTransactionId: String? = null,
     val createdAt: Instant = InstantUtils.now(),
     var updatedAt: Instant = InstantUtils.now(),
@@ -76,6 +76,7 @@ class Subscription private constructor(
         commands.forEach { command ->
             when (command) {
                 is SubscriptionCommand.IncompleteSubscription -> apply(command)
+                is SubscriptionCommand.RenewSubscription -> apply(command)
                 is SubscriptionCommand.ChangeStatus -> apply(command)
             }
         }
@@ -86,6 +87,13 @@ class Subscription private constructor(
     private fun apply(command: SubscriptionCommand.IncompleteSubscription) {
         status.incomplete()
         lastTransactionId = command.aTransactionId
+    }
+
+    private fun apply(command: SubscriptionCommand.RenewSubscription) {
+        status.active()
+        lastTransactionId = command.aTransactionId
+        dueDate = dueDate.plusMonths(1)
+        lastRenewDate = InstantUtils.now()
     }
 
     private fun apply(command: SubscriptionCommand.ChangeStatus) {
