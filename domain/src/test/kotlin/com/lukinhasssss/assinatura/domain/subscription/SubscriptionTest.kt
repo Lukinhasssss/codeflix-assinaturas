@@ -94,7 +94,7 @@ class SubscriptionTest : UnitTest, FunSpec({
         }
     }
 
-    test("given trialing subscription, when execute IncompleteCommand, should transit to incomplete status") {
+    test("given trialing subscription, when execute IncompleteCommand, should transit to incomplete state") {
         // given
         val expectedId = SubscriptionId(IdUtils.uuid())
         val expectedVersion = 0
@@ -140,6 +140,53 @@ class SubscriptionTest : UnitTest, FunSpec({
             updatedAt shouldBeAfter expectedUpdatedAt
             domainEvents.size shouldBe expectedEventsCount
             // domainEvents.first() shouldBeSameInstanceAs SubscriptionEvent.SubscriptionIncomplete::class
+        }
+    }
+
+    test("given trialing subscription, when execute RenewCommand, should transit to active state") {
+        // given
+        val expectedPlan = Fixture.Plans.plus()
+        val expectedId = SubscriptionId(IdUtils.uuid())
+        val expectedVersion = 0
+        val expectedAccountId = AccountId(IdUtils.uuid())
+        val expectedPlanId = expectedPlan.id
+        val expectedStatus = SubscriptionStatus.ACTIVE
+        val expectedDueDate = LocalDate.now().plusMonths(1)
+        val expectedLastTransactionId = IdUtils.uuid()
+        val expectedCreatedAt = InstantUtils.now()
+        val expectedUpdatedAt = InstantUtils.now()
+        val expectedEventsCount = 1
+
+        val actualSubscription =
+            Subscription.with(
+                subscriptionId = expectedId,
+                version = expectedVersion,
+                accountId = expectedAccountId,
+                planId = expectedPlanId,
+                status = SubscriptionStatus.TRIALING,
+                dueDate = LocalDate.now(),
+                createdAt = expectedCreatedAt,
+                updatedAt = expectedUpdatedAt,
+            )
+
+        // when
+        actualSubscription.execute(SubscriptionCommand.RenewSubscription(expectedPlan, expectedLastTransactionId))
+
+        // then
+        with(actualSubscription) {
+            this.shouldNotBeNull()
+            id shouldBe expectedId
+            version shouldBe expectedVersion
+            accountId shouldBe expectedAccountId
+            planId shouldBe expectedPlanId
+            status.value() shouldBe expectedStatus
+            dueDate shouldBe expectedDueDate
+            lastRenewDate.shouldNotBeNull()
+            lastTransactionId shouldBe expectedLastTransactionId
+            createdAt shouldBe expectedCreatedAt
+            updatedAt shouldBeAfter expectedUpdatedAt
+            domainEvents.size shouldBe expectedEventsCount
+            // domainEvents.first() shouldBeSameInstanceAs SubscriptionEvent.SubscriptionRenewed::class
         }
     }
 })
