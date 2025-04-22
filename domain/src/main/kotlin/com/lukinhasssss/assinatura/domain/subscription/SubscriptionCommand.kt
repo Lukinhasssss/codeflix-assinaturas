@@ -4,7 +4,7 @@ import com.lukinhasssss.assinatura.domain.AssertionConcern
 import com.lukinhasssss.assinatura.domain.plan.Plan
 
 sealed interface SubscriptionCommand : AssertionConcern {
-    data class IncompleteSubscription(
+    class IncompleteSubscription(
         val aReason: String,
         val aTransactionId: String,
     ) : SubscriptionCommand {
@@ -13,7 +13,7 @@ sealed interface SubscriptionCommand : AssertionConcern {
         }
     }
 
-    data class RenewSubscription(
+    class RenewSubscription(
         val selectedPlan: Plan,
         val aTransactionId: String,
     ) : SubscriptionCommand {
@@ -22,7 +22,9 @@ sealed interface SubscriptionCommand : AssertionConcern {
         }
     }
 
-    data class ChangeStatus(
+    class CancelSubscription : SubscriptionCommand
+
+    class ChangeStatus(
         val status: String,
     ) : SubscriptionCommand {
         init {

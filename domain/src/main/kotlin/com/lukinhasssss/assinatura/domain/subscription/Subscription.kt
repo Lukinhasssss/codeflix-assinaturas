@@ -77,6 +77,7 @@ class Subscription private constructor(
             when (command) {
                 is SubscriptionCommand.IncompleteSubscription -> apply(command)
                 is SubscriptionCommand.RenewSubscription -> apply(command)
+                is SubscriptionCommand.CancelSubscription -> apply()
                 is SubscriptionCommand.ChangeStatus -> apply(command)
             }
         }
@@ -94,6 +95,10 @@ class Subscription private constructor(
         lastTransactionId = command.aTransactionId
         dueDate = dueDate.plusMonths(1)
         lastRenewDate = InstantUtils.now()
+    }
+
+    private fun apply() {
+        status.cancel()
     }
 
     private fun apply(command: SubscriptionCommand.ChangeStatus) {
