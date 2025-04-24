@@ -1,4 +1,4 @@
-package com.lukinhasssss.assinatura.domain.account.iam
+package com.lukinhasssss.assinatura.domain.account.idp
 
 import com.lukinhasssss.assinatura.domain.UnitTest
 import com.lukinhasssss.assinatura.domain.exception.DomainException

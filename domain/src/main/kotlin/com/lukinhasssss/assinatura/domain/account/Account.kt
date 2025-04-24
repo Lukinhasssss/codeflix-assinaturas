@@ -5,7 +5,7 @@ import com.lukinhasssss.assinatura.domain.account.AccountCommand.ChangeDocumentC
 import com.lukinhasssss.assinatura.domain.account.AccountCommand.ChangeEmailCommand
 import com.lukinhasssss.assinatura.domain.account.AccountCommand.ChangeProfileCommand
 import com.lukinhasssss.assinatura.domain.account.AccountEvent.AccountCreated
-import com.lukinhasssss.assinatura.domain.account.iam.UserId
+import com.lukinhasssss.assinatura.domain.account.idp.UserId
 import com.lukinhasssss.assinatura.domain.person.Address
 import com.lukinhasssss.assinatura.domain.person.Document
 import com.lukinhasssss.assinatura.domain.person.Email
