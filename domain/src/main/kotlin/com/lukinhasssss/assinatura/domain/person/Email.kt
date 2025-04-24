@@ -5,7 +5,7 @@ import java.util.regex.Pattern
 
 data class Email(val value: String) : ValueObject {
     private companion object {
-        val EMAIL_REGEX = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)\$")
+        val EMAIL_REGEX: Pattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$")
     }
 
     init {

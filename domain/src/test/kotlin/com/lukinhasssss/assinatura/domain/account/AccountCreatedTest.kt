@@ -17,7 +17,7 @@ class AccountCreatedTest : UnitTest, FunSpec({
     test("given valid params, when instantiate event, should return it") {
         // given
         val expectedAccountId = AccountId(IdUtils.uuid())
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email(Fixture.Person.email())
         val expectedDocument = Fixture.Person.document()

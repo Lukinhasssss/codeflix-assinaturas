@@ -14,10 +14,10 @@ interface AssertionConcern {
     }
 
     fun assertArgumentNotEmpty(
-        value: String,
+        value: String?,
         aMessage: String,
     ): String {
-        if (value.isBlank()) {
+        if (value.isNullOrBlank()) {
             throw DomainException.with(aMessage)
         }
         return value

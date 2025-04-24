@@ -22,7 +22,7 @@ class AccountTest : UnitTest, FunSpec({
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 0
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Fixture.Person.document()
@@ -55,7 +55,7 @@ class AccountTest : UnitTest, FunSpec({
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Fixture.Person.document()
@@ -71,7 +71,7 @@ class AccountTest : UnitTest, FunSpec({
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
 
@@ -101,7 +101,7 @@ class AccountTest : UnitTest, FunSpec({
         val expectedErrorMessage = "'accountId' should not be empty"
         val expectedId = ""
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Fixture.Person.document()
@@ -142,7 +142,7 @@ class AccountTest : UnitTest, FunSpec({
                 Account.with(
                     anAccountId = expectedId,
                     version = expectedVersion,
-                    anUserId = UserId(expectedUserId),
+                    anUserId = UserId.from(expectedUserId),
                     aName = expectedName,
                     anEmail = expectedEmail,
                     aDocument = expectedDocument,
@@ -159,7 +159,7 @@ class AccountTest : UnitTest, FunSpec({
         val expectedErrorMessage = "'firstName' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Fixture.Person.document()
         val expectedAddress = Fixture.Person.fullAddress()
@@ -187,7 +187,7 @@ class AccountTest : UnitTest, FunSpec({
         val expectedErrorMessage = "'lastName' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Fixture.Person.document()
         val expectedAddress = Fixture.Person.fullAddress()
@@ -215,7 +215,7 @@ class AccountTest : UnitTest, FunSpec({
         val expectedErrorMessage = "'email' should be a valid email"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedDocument = Fixture.Person.document()
         val expectedAddress = Fixture.Person.fullAddress()
@@ -243,7 +243,7 @@ class AccountTest : UnitTest, FunSpec({
         val expectedErrorMessage = "Invalid document type"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedAddress = Fixture.Person.fullAddress()
@@ -271,7 +271,7 @@ class AccountTest : UnitTest, FunSpec({
         val expectedErrorMessage = "'cpf' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedAddress = Fixture.Person.fullAddress()
@@ -299,7 +299,7 @@ class AccountTest : UnitTest, FunSpec({
         val expectedErrorMessage = "'cpf' is invalid"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedAddress = Fixture.Person.fullAddress()
@@ -327,7 +327,7 @@ class AccountTest : UnitTest, FunSpec({
         val expectedErrorMessage = "'cnpj' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedAddress = Fixture.Person.fullAddress()
@@ -355,7 +355,7 @@ class AccountTest : UnitTest, FunSpec({
         val expectedErrorMessage = "'cnpj' is invalid"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedAddress = Fixture.Person.fullAddress()
@@ -382,7 +382,7 @@ class AccountTest : UnitTest, FunSpec({
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Fixture.Person.document()
@@ -418,7 +418,7 @@ class AccountTest : UnitTest, FunSpec({
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email(Fixture.Person.email())
         val expectedDocument = Fixture.Person.document()
@@ -451,7 +451,7 @@ class AccountTest : UnitTest, FunSpec({
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email(Fixture.Person.email())
         val expectedDocument = Fixture.Person.document()
