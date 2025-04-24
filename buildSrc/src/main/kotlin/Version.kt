@@ -7,7 +7,7 @@ object Version {
     const val SONARQUBE = "5.0.0.4638"
     const val SPRING_BOOT = "3.4.4"
     const val SPRING_DEPENDENCY_MANAGEMENT = "1.1.4"
-    const val KOTEST = "6.0.0.M2"
+    const val KOTEST = "6.0.0.M3"
     const val TEST_CONTAINERS = "1.19.8"
     const val VAVR = "0.10.2"
     const val OPEN_API = "1.8.0"
