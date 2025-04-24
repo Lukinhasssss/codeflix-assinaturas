@@ -32,15 +32,20 @@ class Subscription private constructor(
         ): Subscription {
             val now = InstantUtils.now()
 
-            return Subscription(
-                subscriptionId = anId,
-                accountId = anAccountId,
-                planId = selectedPlan.id,
-                status = SubscriptionStatus.TRIALING,
-                dueDate = LocalDate.now().plusMonths(1),
-                createdAt = now,
-                updatedAt = now,
-            )
+            val aNewSubscription =
+                Subscription(
+                    subscriptionId = anId,
+                    accountId = anAccountId,
+                    planId = selectedPlan.id,
+                    status = SubscriptionStatus.TRIALING,
+                    dueDate = LocalDate.now().plusMonths(1),
+                    createdAt = now,
+                    updatedAt = now,
+                )
+
+            aNewSubscription.registerEvent(SubscriptionEvent.SubscriptionCreated(aNewSubscription))
+
+            return aNewSubscription
         }
 
         fun with(
@@ -88,6 +93,7 @@ class Subscription private constructor(
     private fun apply(command: SubscriptionCommand.IncompleteSubscription) {
         status.incomplete()
         lastTransactionId = command.aTransactionId
+        registerEvent(SubscriptionEvent.SubscriptionIncomplete(this, command.aReason))
     }
 
     private fun apply(command: SubscriptionCommand.RenewSubscription) {
@@ -95,10 +101,12 @@ class Subscription private constructor(
         lastTransactionId = command.aTransactionId
         dueDate = dueDate.plusMonths(1)
         lastRenewDate = InstantUtils.now()
+        registerEvent(SubscriptionEvent.SubscriptionRenewed(this, command.selectedPlan))
     }
 
     private fun apply() {
         status.cancel()
+        registerEvent(SubscriptionEvent.SubscriptionCanceled(this))
     }
 
     private fun apply(command: SubscriptionCommand.ChangeStatus) {
