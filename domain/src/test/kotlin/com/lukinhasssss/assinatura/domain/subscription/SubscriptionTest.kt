@@ -12,6 +12,7 @@ import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.date.shouldBeAfter
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeSameInstanceAs
 import java.time.Instant
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -46,6 +47,7 @@ class SubscriptionTest : UnitTest, FunSpec({
             createdAt.shouldNotBeNull()
             updatedAt.shouldNotBeNull()
             domainEvents.size shouldBe expectedEventsCount
+            domainEvents.first()::class shouldBeSameInstanceAs SubscriptionEvent.SubscriptionCreated::class
         }
     }
 
@@ -122,6 +124,8 @@ class SubscriptionTest : UnitTest, FunSpec({
                 updatedAt = expectedUpdatedAt,
             )
 
+        Thread.sleep(10)
+
         // when
         actualSubscription.execute(SubscriptionCommand.IncompleteSubscription(expectedReason, expectedLastTransactionId))
 
@@ -139,7 +143,7 @@ class SubscriptionTest : UnitTest, FunSpec({
             createdAt shouldBe expectedCreatedAt
             updatedAt shouldBeAfter expectedUpdatedAt
             domainEvents.size shouldBe expectedEventsCount
-            // domainEvents.first() shouldBeSameInstanceAs SubscriptionEvent.SubscriptionIncomplete::class
+            domainEvents.first()::class shouldBeSameInstanceAs SubscriptionEvent.SubscriptionIncomplete::class
         }
     }
 
@@ -169,6 +173,8 @@ class SubscriptionTest : UnitTest, FunSpec({
                 updatedAt = expectedUpdatedAt,
             )
 
+        Thread.sleep(10)
+
         // when
         actualSubscription.execute(SubscriptionCommand.RenewSubscription(expectedPlan, expectedLastTransactionId))
 
@@ -186,7 +192,7 @@ class SubscriptionTest : UnitTest, FunSpec({
             createdAt shouldBe expectedCreatedAt
             updatedAt shouldBeAfter expectedUpdatedAt
             domainEvents.size shouldBe expectedEventsCount
-            // domainEvents.first() shouldBeSameInstanceAs SubscriptionEvent.SubscriptionRenewed::class
+            domainEvents.first()::class shouldBeSameInstanceAs SubscriptionEvent.SubscriptionRenewed::class
         }
     }
 
@@ -218,6 +224,8 @@ class SubscriptionTest : UnitTest, FunSpec({
                 updatedAt = expectedUpdatedAt,
             )
 
+        Thread.sleep(10)
+
         // when
         actualSubscription.execute(SubscriptionCommand.CancelSubscription())
 
@@ -235,7 +243,7 @@ class SubscriptionTest : UnitTest, FunSpec({
             createdAt shouldBe expectedCreatedAt
             updatedAt shouldBeAfter expectedUpdatedAt
             domainEvents.size shouldBe expectedEventsCount
-            // domainEvents.first() shouldBeSameInstanceAs SubscriptionEvent.SubscriptionCanceled::class
+            domainEvents.first()::class shouldBeSameInstanceAs SubscriptionEvent.SubscriptionCanceled::class
         }
     }
 })
