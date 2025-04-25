@@ -4,84 +4,80 @@ import com.lukinhasssss.assinatura.domain.UnitTest
 import com.lukinhasssss.assinatura.domain.exception.DomainException
 import com.lukinhasssss.assinatura.domain.person.Document.Cnpj
 import com.lukinhasssss.assinatura.domain.person.Document.Cpf
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
-import org.junit.jupiter.params.provider.ValueSource
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.data.forAll
+import io.kotest.data.row
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
-class DocumentTest : UnitTest {
-    @ParameterizedTest
-    @CsvSource(
-        "cpf, 12345678909",
-        "cnpj, 12345678901234",
-    )
-    fun `given valid document, when instantiate, should return ValueObject`(
-        expectedDocumentType: String,
-        expectedDocumentNumber: String,
-    ) {
-        // when
-        val actualDocument = DocumentFactory.create(expectedDocumentType, expectedDocumentNumber)
+class DocumentTest : UnitTest, FunSpec({
+    context("given valid document, when instantiate, should return ValueObject") {
+        forAll(
+            row("cpf", "12345678909"),
+            row("cnpj", "12345678901234"),
+        ) { expectedDocumentType, expectedDocumentNumber ->
+            // when
+            val actualDocument = DocumentFactory.create(expectedDocumentType, expectedDocumentNumber)
 
-        // then
-        assertEquals(expectedDocumentNumber, actualDocument.value)
-        when (expectedDocumentType) {
-            "cpf" -> assert(actualDocument is Cpf)
-            "cnpj" -> assert(actualDocument is Cnpj)
+            // then
+            actualDocument.value shouldBe expectedDocumentNumber
+            when (expectedDocumentType) {
+                "cpf" -> actualDocument.shouldBeInstanceOf<Cpf>()
+                "cnpj" -> actualDocument.shouldBeInstanceOf<Cnpj>()
+            }
         }
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = ["cpf", "cnpj"])
-    fun `given empty document, when instantiate, should throws DomainException`(expectedDocumentType: String) {
-        // given
-        val expectedErrorMessage = "'$expectedDocumentType' should not be empty"
+    context("given empty document, when instantiate, should throws DomainException") {
+        forAll(
+            row("cpf"),
+            row("cnpj"),
+        ) { expectedDocumentType ->
+            // given
+            val expectedErrorMessage = "'$expectedDocumentType' should not be empty"
 
-        // when
-        val actualError =
-            assertThrows<DomainException> {
-                DocumentFactory.create(expectedDocumentType, "")
-            }
+            // when
+            val actualError =
+                shouldThrow<DomainException> {
+                    DocumentFactory.create(expectedDocumentType, "")
+                }
 
-        // then
-        assertEquals(expectedErrorMessage, actualError.message)
+            // then
+            actualError.message shouldBe expectedErrorMessage
+        }
     }
 
-    @ParameterizedTest
-    @CsvSource(
-        "cpf, 1234567890",
-        "cnpj, 1234567890123",
-    )
-    fun `given invalid document lenght, when instantiate, should throws DomainException`(
-        expectedDocumentType: String,
-        expectedDocumentNumber: String,
-    ) {
-        // given
-        val expectedErrorMessage = "'$expectedDocumentType' is invalid"
+    context("given invalid document length, when instantiate, should throws DomainException") {
+        forAll(
+            row("cpf", "1234567890"),
+            row("cnpj", "1234567890123"),
+        ) { expectedDocumentType, expectedDocumentNumber ->
+            // given
+            val expectedErrorMessage = "'$expectedDocumentType' is invalid"
 
-        // when
-        val actualError =
-            assertThrows<DomainException> {
-                DocumentFactory.create(expectedDocumentType, expectedDocumentNumber)
-            }
+            // when
+            val actualError =
+                shouldThrow<DomainException> {
+                    DocumentFactory.create(expectedDocumentType, expectedDocumentNumber)
+                }
 
-        // then
-        assertEquals(expectedErrorMessage, actualError.message)
+            // then
+            actualError.message shouldBe expectedErrorMessage
+        }
     }
 
-    @Test
-    fun `given invalid document type, when instantiate, should throws DomainException`() {
+    test("given invalid document type, when instantiate, should throws DomainException") {
         // given
         val expectedErrorMessage = "Invalid document type"
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 DocumentFactory.create("invalidType", "12345678909")
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
-}
+})

@@ -2,13 +2,12 @@ package com.lukinhasssss.assinatura.domain.account
 
 import com.lukinhasssss.assinatura.domain.UnitTest
 import com.lukinhasssss.assinatura.domain.exception.DomainException
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 
-class AccountIdTest : UnitTest {
-    @Test
-    fun `given valid id, when instantiate, should return ValueObject`() {
+class AccountIdTest : UnitTest, FunSpec({
+    test("given valid id, when instantiate, should return ValueObject") {
         // given
         val expectedAccountId = "12345678-1234-1234-1234-123456789012"
 
@@ -16,11 +15,10 @@ class AccountIdTest : UnitTest {
         val actualAccountId = AccountId(expectedAccountId)
 
         // then
-        assertEquals(expectedAccountId, actualAccountId.value)
+        actualAccountId.value shouldBe expectedAccountId
     }
 
-    @Test
-    fun `given empty id, when instantiate, should throws DomainException`() {
+    test("given empty id, when instantiate, should throws DomainException") {
         // given
         val expectedErrorMessage = "'accountId' should not be empty"
 
@@ -28,11 +26,11 @@ class AccountIdTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 AccountId(expectedAccountId)
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
-}
+})

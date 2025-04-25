@@ -3,14 +3,12 @@ package com.lukinhasssss.assinatura.domain.person
 import com.lukinhasssss.assinatura.domain.Fixture
 import com.lukinhasssss.assinatura.domain.UnitTest
 import com.lukinhasssss.assinatura.domain.exception.DomainException
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 
-class AddressTest : UnitTest {
-    @Test
-    fun `given valid Address, when instantiate, should return ValueObject`() {
+class AddressTest : UnitTest, FunSpec({
+    test("given valid Address, when instantiate, should return ValueObject") {
         // given
         val expectedZipCode = Fixture.Person.zipCode()
         val expectedNumber = Fixture.Person.buildingNumber()
@@ -21,14 +19,13 @@ class AddressTest : UnitTest {
         val actualAddress = Address(expectedZipCode, expectedNumber, expectedComplement, expectedCountry)
 
         // then
-        assertEquals(expectedZipCode, actualAddress.zipCode)
-        assertEquals(expectedNumber, actualAddress.number)
-        assertEquals(expectedComplement, actualAddress.complement)
-        assertEquals(expectedCountry, actualAddress.country)
+        actualAddress.zipCode shouldBe expectedZipCode
+        actualAddress.number shouldBe expectedNumber
+        actualAddress.complement shouldBe expectedComplement
+        actualAddress.country shouldBe expectedCountry
     }
 
-    @Test
-    fun `given empty complement, when instantiate, should return ValueObject`() {
+    test("given empty complement, when instantiate, should return ValueObject") {
         // given
         val expectedZipCode = Fixture.Person.zipCode()
         val expectedNumber = Fixture.Person.buildingNumber()
@@ -36,20 +33,16 @@ class AddressTest : UnitTest {
         val expectedCountry = Fixture.Person.country()
 
         // when
-        val actualAddress =
-            assertDoesNotThrow {
-                Address(expectedZipCode, expectedNumber, expectedComplement, expectedCountry)
-            }
+        val actualAddress = Address(expectedZipCode, expectedNumber, expectedComplement, expectedCountry)
 
         // then
-        assertEquals(expectedZipCode, actualAddress.zipCode)
-        assertEquals(expectedNumber, actualAddress.number)
-        assertEquals(expectedComplement, actualAddress.complement)
-        assertEquals(expectedCountry, actualAddress.country)
+        actualAddress.zipCode shouldBe expectedZipCode
+        actualAddress.number shouldBe expectedNumber
+        actualAddress.complement shouldBe expectedComplement
+        actualAddress.country shouldBe expectedCountry
     }
 
-    @Test
-    fun `given empty zipCode, when instantiate, should throws DomainException`() {
+    test("given empty zipCode, when instantiate, should throws DomainException") {
         // given
         val expectedErrorMessage = "'zipCode' should not be empty"
 
@@ -60,16 +53,15 @@ class AddressTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Address(expectedZipCode, expectedNumber, expectedComplement, expectedCountry)
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given empty number, when instantiate, should throws DomainException`() {
+    test("given empty number, when instantiate, should throws DomainException") {
         // given
         val expectedErrorMessage = "'number' should not be empty"
 
@@ -80,16 +72,15 @@ class AddressTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Address(expectedZipCode, expectedNumber, expectedComplement, expectedCountry)
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given empty country, when instantiate, should throws DomainException`() {
+    test("given empty country, when instantiate, should throws DomainException") {
         // given
         val expectedErrorMessage = "'country' should not be empty"
 
@@ -100,11 +91,11 @@ class AddressTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Address(expectedZipCode, expectedNumber, expectedComplement, expectedCountry)
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
-}
+})
