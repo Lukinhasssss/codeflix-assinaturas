@@ -1,11 +1,17 @@
 package com.lukinhasssss.assinatura.domain
 
+import com.lukinhasssss.assinatura.domain.account.Account
+import com.lukinhasssss.assinatura.domain.account.AccountId
+import com.lukinhasssss.assinatura.domain.account.idp.UserId
 import com.lukinhasssss.assinatura.domain.money.Money
 import com.lukinhasssss.assinatura.domain.person.Address
 import com.lukinhasssss.assinatura.domain.person.DocumentFactory
+import com.lukinhasssss.assinatura.domain.person.Email
 import com.lukinhasssss.assinatura.domain.person.Name
 import com.lukinhasssss.assinatura.domain.plan.Plan
 import com.lukinhasssss.assinatura.domain.plan.PlanId
+import com.lukinhasssss.assinatura.domain.subscription.Subscription
+import com.lukinhasssss.assinatura.domain.subscription.SubscriptionId
 import com.lukinhasssss.assinatura.domain.utils.IdUtils
 import net.datafaker.Faker
 
@@ -23,6 +29,8 @@ object Fixture {
         fun fullName() = Name(firstName(), lastName())
 
         fun email(): String = FAKER.internet().emailAddress()
+
+        fun emailClass() = Email(email())
 
         // Document
         fun cpf(): String = FAKER.cpf().valid(false)
@@ -56,6 +64,26 @@ object Fixture {
                 aDescription = FAKER.lorem().sentence(),
                 isActive = true,
                 aPrice = Money(currency(), 32.90),
+            )
+    }
+
+    object Accounts {
+        fun john() =
+            Account.newAccount(
+                anAccountId = AccountId("ACC-123"),
+                anUserId = UserId.from("USER-123"),
+                aName = Person.fullName(),
+                anEmail = Person.emailClass(),
+                aDocument = Person.document(),
+            )
+    }
+
+    object Subscriptions {
+        fun johns() =
+            Subscription.new(
+                anId = SubscriptionId("SUB-123"),
+                anAccountId = Accounts.john().id,
+                selectedPlan = Plans.plus(),
             )
     }
 }
