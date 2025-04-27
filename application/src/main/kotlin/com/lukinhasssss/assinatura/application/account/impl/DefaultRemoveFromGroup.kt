@@ -1,6 +1,6 @@
 package com.lukinhasssss.assinatura.application.account.impl
 
-import com.lukinhasssss.assinatura.application.account.AddToSubscribersGroup
+import com.lukinhasssss.assinatura.application.account.RemoveFromGroup
 import com.lukinhasssss.assinatura.domain.account.Account
 import com.lukinhasssss.assinatura.domain.account.AccountGateway
 import com.lukinhasssss.assinatura.domain.account.AccountId
@@ -11,11 +11,11 @@ import com.lukinhasssss.assinatura.domain.subscription.Subscription
 import com.lukinhasssss.assinatura.domain.subscription.SubscriptionGateway
 import com.lukinhasssss.assinatura.domain.subscription.SubscriptionId
 
-class DefaultAddToSubscribersGroup(
+class DefaultRemoveFromGroup(
     private val identityProviderGateway: IdentityProviderGateway,
     private val subscriptionGateway: SubscriptionGateway,
     private val accountGateway: AccountGateway,
-) : AddToSubscribersGroup() {
+) : RemoveFromGroup() {
     override fun execute(input: Input): Output {
         val anAccountId = AccountId(input.accountId)
         val aSubscriptionId = SubscriptionId(input.subscriptionId)
@@ -25,17 +25,19 @@ class DefaultAddToSubscribersGroup(
                 ?.takeIf { it.accountId == anAccountId }
                 ?: throw DomainException.notFound(Subscription::class, aSubscriptionId)
 
-        if (aSubscription.isTrial() || aSubscription.isActive()) {
+        if (isRemovableStatus(aSubscription) && aSubscription.isExpired()) {
             val userId =
                 accountGateway.accountOfId(anAccountId)
                     ?.userId
                     ?: throw DomainException.notFound(Account::class, anAccountId)
 
-            identityProviderGateway.addUserToGroup(userId, GroupId.from(input.groupId))
+            identityProviderGateway.removeUserFromGroup(userId, GroupId.from(input.groupId))
         }
 
         return object : Output {
             override val subscriptionId = aSubscriptionId
         }
     }
+
+    private fun isRemovableStatus(aSubscription: Subscription): Boolean = aSubscription.isCanceled() || aSubscription.isIncomplete()
 }

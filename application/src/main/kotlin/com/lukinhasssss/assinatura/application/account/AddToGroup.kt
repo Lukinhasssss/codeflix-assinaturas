@@ -3,7 +3,7 @@ package com.lukinhasssss.assinatura.application.account
 import com.lukinhasssss.assinatura.application.UseCase
 import com.lukinhasssss.assinatura.domain.subscription.SubscriptionId
 
-abstract class AddToSubscribersGroup : UseCase<AddToSubscribersGroup.Input, AddToSubscribersGroup.Output>() {
+abstract class AddToGroup : UseCase<AddToGroup.Input, AddToGroup.Output>() {
     interface Input {
         val accountId: String
         val groupId: String

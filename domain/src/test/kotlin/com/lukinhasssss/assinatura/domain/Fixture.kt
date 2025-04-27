@@ -14,6 +14,8 @@ import com.lukinhasssss.assinatura.domain.subscription.Subscription
 import com.lukinhasssss.assinatura.domain.subscription.SubscriptionId
 import com.lukinhasssss.assinatura.domain.utils.IdUtils
 import net.datafaker.Faker
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 object Fixture {
     private val FAKER = Faker()
@@ -79,6 +81,28 @@ object Fixture {
     }
 
     object Subscriptions {
+        fun with(
+            accountId: AccountId,
+            planId: PlanId,
+            status: String,
+            date: LocalDateTime,
+        ): Subscription {
+            val instant = date.toInstant(ZoneOffset.UTC)
+
+            return Subscription.with(
+                subscriptionId = SubscriptionId("SUB-123"),
+                version = 1,
+                accountId = accountId,
+                planId = planId,
+                status = status,
+                lastTransactionId = "TID-123",
+                dueDate = date.toLocalDate(),
+                lastRenewDate = instant,
+                createdAt = instant,
+                updatedAt = instant,
+            )
+        }
+
         fun johns() =
             Subscription.new(
                 anId = SubscriptionId("SUB-123"),
