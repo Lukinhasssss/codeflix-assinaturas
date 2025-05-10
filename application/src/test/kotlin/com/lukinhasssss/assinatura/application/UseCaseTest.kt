@@ -9,7 +9,7 @@ import org.junit.jupiter.api.extension.ExtensionContext
 
 @ExtendWith(MockKExtension::class)
 @Tag(value = "unitTest")
-abstract class UseCaseTest : BeforeEachCallback {
+interface UseCaseTest : BeforeEachCallback {
     override fun beforeEach(context: ExtensionContext?) {
         clearAllMocks()
     }

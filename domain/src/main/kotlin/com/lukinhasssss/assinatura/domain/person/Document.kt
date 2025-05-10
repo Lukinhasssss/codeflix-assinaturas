@@ -6,6 +6,16 @@ interface Document : ValueObject {
     val type: String
     val value: String
 
+    companion object {
+        private const val CPF_LENGTH = 11
+        private const val CNPJ_LENGTH = 14
+
+        fun create(
+            documentType: String,
+            documentNumber: String,
+        ): Document = DocumentFactory.create(documentType, documentNumber)
+    }
+
     data class Cpf(
         override val type: String = TYPE,
         override val value: String,
@@ -32,15 +42,5 @@ interface Document : ValueObject {
         companion object {
             const val TYPE = "cnpj"
         }
-    }
-
-    companion object {
-        private const val CPF_LENGTH = 11
-        private const val CNPJ_LENGTH = 14
-
-        fun create(
-            documentType: String,
-            documentNumber: String,
-        ): Document = DocumentFactory.create(documentType, documentNumber)
     }
 }

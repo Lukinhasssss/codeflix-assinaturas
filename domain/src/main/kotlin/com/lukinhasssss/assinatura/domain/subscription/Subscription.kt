@@ -4,7 +4,11 @@ import com.lukinhasssss.assinatura.domain.AggregateRoot
 import com.lukinhasssss.assinatura.domain.account.AccountId
 import com.lukinhasssss.assinatura.domain.plan.Plan
 import com.lukinhasssss.assinatura.domain.plan.PlanId
+import com.lukinhasssss.assinatura.domain.subscription.status.ActiveSubscriptionStatus
+import com.lukinhasssss.assinatura.domain.subscription.status.CanceledSubscriptionStatus
+import com.lukinhasssss.assinatura.domain.subscription.status.IncompleteSubscriptionStatus
 import com.lukinhasssss.assinatura.domain.subscription.status.SubscriptionStatus
+import com.lukinhasssss.assinatura.domain.subscription.status.TrialingSubscriptionStatus
 import com.lukinhasssss.assinatura.domain.utils.InstantUtils
 import java.time.Instant
 import java.time.LocalDate
@@ -89,6 +93,16 @@ class Subscription private constructor(
 
         updatedAt = InstantUtils.now()
     }
+
+    fun isTrial(): Boolean = status is TrialingSubscriptionStatus
+
+    fun isActive(): Boolean = status is ActiveSubscriptionStatus
+
+    fun isCanceled(): Boolean = status is CanceledSubscriptionStatus
+
+    fun isIncomplete(): Boolean = status is IncompleteSubscriptionStatus
+
+    fun isExpired(): Boolean = dueDate.isBefore(LocalDate.now())
 
     private fun apply(command: SubscriptionCommand.IncompleteSubscription) {
         status.incomplete()

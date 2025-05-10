@@ -11,7 +11,7 @@ class Plan private constructor(
     var name: String,
     var description: String,
     var isActive: Boolean = false,
-    val price: Money,
+    var price: Money,
     val createdAt: Instant = InstantUtils.now(),
     var updatedAt: Instant = InstantUtils.now(),
     var deletedAt: Instant?,
@@ -87,6 +87,7 @@ class Plan private constructor(
     private fun changePlan(command: PlanCommand.ChangePlan) {
         name = command.name
         description = command.description
+        price = command.price
 
         if (command.isActive) {
             activatePlan()

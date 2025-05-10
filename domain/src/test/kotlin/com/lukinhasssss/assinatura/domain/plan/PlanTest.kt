@@ -448,11 +448,19 @@ class PlanTest : UnitTest, FunSpec({
 
         val expectedNewName = "Premium"
         val expectedNewDescription = "The best plan ever"
+        val expectedNewPrice = Money(Fixture.currency(), 13.90)
         val expectedNewIsActive = false
 
         // when
         Thread.sleep(1)
-        actualPlan.execute(PlanCommand.ChangePlan(expectedNewName, expectedNewDescription, expectedNewIsActive))
+        actualPlan.execute(
+            PlanCommand.ChangePlan(
+                expectedNewName,
+                expectedNewDescription,
+                expectedNewPrice,
+                expectedNewIsActive,
+            ),
+        )
 
         // then
         with(actualPlan) {
@@ -461,7 +469,7 @@ class PlanTest : UnitTest, FunSpec({
             name shouldBe expectedNewName
             description shouldBe expectedNewDescription
             isActive shouldBe expectedNewIsActive
-            price shouldBe expectedPrice
+            price shouldBe expectedNewPrice
             createdAt.shouldNotBeNull()
             updatedAt.isAfter(createdAt).shouldBeTrue()
             deletedAt.shouldNotBeNull()
