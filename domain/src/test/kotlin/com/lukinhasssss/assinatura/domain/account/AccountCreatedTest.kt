@@ -3,21 +3,21 @@ package com.lukinhasssss.assinatura.domain.account
 import com.lukinhasssss.assinatura.domain.Fixture
 import com.lukinhasssss.assinatura.domain.UnitTest
 import com.lukinhasssss.assinatura.domain.account.AccountEvent.AccountCreated
+import com.lukinhasssss.assinatura.domain.account.idp.UserId
 import com.lukinhasssss.assinatura.domain.exception.DomainException
 import com.lukinhasssss.assinatura.domain.person.Email
 import com.lukinhasssss.assinatura.domain.utils.IdUtils
 import com.lukinhasssss.assinatura.domain.utils.InstantUtils
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 
-class AccountCreatedTest : UnitTest {
-    @Test
-    fun `given valid params, when instantiate event, should return it`() {
+class AccountCreatedTest : UnitTest, FunSpec({
+    test("given valid params, when instantiate event, should return it") {
         // given
         val expectedAccountId = AccountId(IdUtils.uuid())
-        val expectedUserId = UserId("USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email(Fixture.Person.email())
         val expectedDocument = Fixture.Person.document()
@@ -31,18 +31,17 @@ class AccountCreatedTest : UnitTest {
 
         // then
         with(actualEvent) {
-            assertNotNull(this)
-            assertEquals(expectedAggregateId, aggregateId)
-            assertEquals(expectedAggregateType, aggregateType)
-            assertEquals(expectedAccountId.value, accountId)
-            assertEquals(expectedEmail.value, email)
-            assertEquals(expectedName.fullName(), fullName)
-            assertNotNull(occurredOn)
+            this shouldNotBe null
+            aggregateId shouldBe expectedAggregateId
+            aggregateType shouldBe expectedAggregateType
+            accountId shouldBe expectedAccountId.value
+            email shouldBe expectedEmail.value
+            fullName shouldBe expectedName.fullName()
+            occurredOn shouldNotBe null
         }
     }
 
-    @Test
-    fun `given empty account id, when instantiate, should return error`() {
+    test("given empty account id, when instantiate, should return error") {
         // given
         val expectedErrorMessage = "'accountId' should not be empty"
 
@@ -53,16 +52,15 @@ class AccountCreatedTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 AccountCreated(expectedAccountId, expectedEmail, expectedFullName, expectedOccurredOn)
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given empty email, when instantiate, should return error`() {
+    test("given empty email, when instantiate, should return error") {
         // given
         val expectedErrorMessage = "'email' should not be empty"
 
@@ -73,16 +71,15 @@ class AccountCreatedTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 AccountCreated(expectedAccountId, expectedEmail, expectedFullName, expectedOccurredOn)
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given empty full name, when instantiate, should return error`() {
+    test("given empty full name, when instantiate, should return error") {
         // given
         val expectedErrorMessage = "'fullName' should not be empty"
 
@@ -93,11 +90,11 @@ class AccountCreatedTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 AccountCreated(expectedAccountId, expectedEmail, expectedFullName, expectedOccurredOn)
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
-}
+})

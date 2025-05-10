@@ -1,10 +1,20 @@
 package com.lukinhasssss.assinatura.domain.person
 
-import com.lukinhasssss.admin.catalogo.domain.ValueObject
+import com.lukinhasssss.assinatura.domain.ValueObject
 
 interface Document : ValueObject {
     val type: String
     val value: String
+
+    companion object {
+        private const val CPF_LENGTH = 11
+        private const val CNPJ_LENGTH = 14
+
+        fun create(
+            documentType: String,
+            documentNumber: String,
+        ): Document = DocumentFactory.create(documentType, documentNumber)
+    }
 
     data class Cpf(
         override val type: String = TYPE,
@@ -32,15 +42,5 @@ interface Document : ValueObject {
         companion object {
             const val TYPE = "cnpj"
         }
-    }
-
-    companion object {
-        private const val CPF_LENGTH = 11
-        private const val CNPJ_LENGTH = 14
-
-        fun create(
-            documentType: String,
-            documentNumber: String,
-        ): Document = DocumentFactory.create(documentType, documentNumber)
     }
 }

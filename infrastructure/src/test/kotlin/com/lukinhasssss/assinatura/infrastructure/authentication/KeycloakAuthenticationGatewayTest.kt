@@ -10,7 +10,7 @@ import com.lukinhasssss.assinatura.domain.utils.IdUtils
 import com.lukinhasssss.assinatura.infrastructure.authentication.AuthenticationGateway.ClientCredentialsInput
 import com.lukinhasssss.assinatura.infrastructure.authentication.AuthenticationGateway.RefreshTokenInput
 import com.lukinhasssss.assinatura.infrastructure.authentication.KeycloakAuthenticationGateway.KeycloakAuthenticationResult
-import com.lukinhasssss.assinatura.infrastructure.configuration.json.Json
+import com.lukinhasssss.assinatura.infrastructure.json.Json
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

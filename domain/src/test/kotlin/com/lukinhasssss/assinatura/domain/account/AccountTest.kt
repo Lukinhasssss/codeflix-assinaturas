@@ -5,24 +5,24 @@ import com.lukinhasssss.assinatura.domain.UnitTest
 import com.lukinhasssss.assinatura.domain.account.AccountCommand.ChangeDocumentCommand
 import com.lukinhasssss.assinatura.domain.account.AccountCommand.ChangeEmailCommand
 import com.lukinhasssss.assinatura.domain.account.AccountCommand.ChangeProfileCommand
+import com.lukinhasssss.assinatura.domain.account.idp.UserId
 import com.lukinhasssss.assinatura.domain.exception.DomainException
 import com.lukinhasssss.assinatura.domain.person.Document
 import com.lukinhasssss.assinatura.domain.person.Email
 import com.lukinhasssss.assinatura.domain.person.Name
 import com.lukinhasssss.assinatura.domain.utils.IdUtils
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertInstanceOf
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
+import io.kotest.assertions.throwables.shouldNotThrowAny
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
-class AccountTest : UnitTest {
-    @Test
-    fun `given valid params, when calls new account, should instantiate and dispatch event`() {
+class AccountTest : UnitTest, FunSpec({
+    test("given valid params, when calls new account, should instantiate and dispatch event") {
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 0
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Fixture.Person.document()
@@ -40,40 +40,38 @@ class AccountTest : UnitTest {
 
         // then
         with(actualAccount) {
-            assertEquals(expectedId, id)
-            assertEquals(expectedVersion, version)
-            assertEquals(expectedUserId, userId)
-            assertEquals(expectedName, name)
-            assertEquals(expectedEmail, email)
-            assertEquals(expectedDocument, document)
-            assertEquals(expectedEventsCount, domainEvents.size)
-            assertInstanceOf(AccountEvent.AccountCreated::class.java, domainEvents.first())
+            id shouldBe expectedId
+            version shouldBe expectedVersion
+            userId shouldBe expectedUserId
+            name shouldBe expectedName
+            email shouldBe expectedEmail
+            document shouldBe expectedDocument
+            domainEvents.size shouldBe expectedEventsCount
+            domainEvents.first().shouldBeInstanceOf<AccountEvent.AccountCreated>()
         }
     }
 
-    @Test
-    fun `given valid params, when calls with, should instantiate`() {
+    test("given valid params, when calls with, should instantiate") {
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Fixture.Person.document()
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when - then
-        assertDoesNotThrow {
+        shouldNotThrowAny {
             Account.with(expectedId, expectedVersion, expectedUserId, expectedName, expectedEmail, expectedDocument, expectedAddress)
         }
     }
 
-    @Test
-    fun `given null address, when calls with, should instantiate`() {
+    test("given null address, when calls with, should instantiate") {
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
 
@@ -90,21 +88,20 @@ class AccountTest : UnitTest {
 
         // then
         with(actualAccount) {
-            assertEquals(expectedId, id)
-            assertEquals(expectedVersion, version)
-            assertEquals(expectedUserId, userId)
-            assertEquals(expectedName, name)
-            assertEquals(expectedEmail, email)
+            id shouldBe expectedId
+            version shouldBe expectedVersion
+            userId shouldBe expectedUserId
+            name shouldBe expectedName
+            email shouldBe expectedEmail
         }
     }
 
-    @Test
-    fun `given an invalid accountId, when call with, should return error`() {
+    test("given an invalid accountId, when call with, should return error") {
         // given
         val expectedErrorMessage = "'accountId' should not be empty"
         val expectedId = ""
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Fixture.Person.document()
@@ -112,7 +109,7 @@ class AccountTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Account.with(
                     anAccountId = AccountId(expectedId),
                     version = expectedVersion,
@@ -125,11 +122,10 @@ class AccountTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given an invalid userId, when call with, should return error`() {
+    test("given an invalid userId, when call with, should return error") {
         // given
         val expectedErrorMessage = "'userId' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
@@ -142,11 +138,11 @@ class AccountTest : UnitTest {
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Account.with(
                     anAccountId = expectedId,
                     version = expectedVersion,
-                    anUserId = UserId(expectedUserId),
+                    anUserId = UserId.from(expectedUserId),
                     aName = expectedName,
                     anEmail = expectedEmail,
                     aDocument = expectedDocument,
@@ -155,23 +151,22 @@ class AccountTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given an invalid firstName, when call with, should return error`() {
+    test("given an invalid firstName, when call with, should return error") {
         // given
         val expectedErrorMessage = "'firstName' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Fixture.Person.document()
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Account.with(
                     anAccountId = expectedId,
                     version = expectedVersion,
@@ -184,23 +179,22 @@ class AccountTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given an invalid lastName, when call with, should return error`() {
+    test("given an invalid lastName, when call with, should return error") {
         // given
         val expectedErrorMessage = "'lastName' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Fixture.Person.document()
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Account.with(
                     anAccountId = expectedId,
                     version = expectedVersion,
@@ -213,23 +207,22 @@ class AccountTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given an invalid email, when call with, should return error`() {
+    test("given an invalid email, when call with, should return error") {
         // given
         val expectedErrorMessage = "'email' should be a valid email"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedDocument = Fixture.Person.document()
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Account.with(
                     anAccountId = expectedId,
                     version = expectedVersion,
@@ -242,23 +235,22 @@ class AccountTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given an invalid document type, when call with, should return error`() {
+    test("given an invalid document type, when call with, should return error") {
         // given
         val expectedErrorMessage = "Invalid document type"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Account.with(
                     anAccountId = expectedId,
                     version = expectedVersion,
@@ -271,23 +263,22 @@ class AccountTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given an empty cpf document number, when call with, should return error`() {
+    test("given an empty cpf document number, when call with, should return error") {
         // given
         val expectedErrorMessage = "'cpf' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Account.with(
                     anAccountId = expectedId,
                     version = expectedVersion,
@@ -300,23 +291,22 @@ class AccountTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given an invalid cpf document number, when call with, should return error`() {
+    test("given an invalid cpf document number, when call with, should return error") {
         // given
         val expectedErrorMessage = "'cpf' is invalid"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Account.with(
                     anAccountId = expectedId,
                     version = expectedVersion,
@@ -329,23 +319,22 @@ class AccountTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given an empty cnpj document number, when call with, should return error`() {
+    test("given an empty cnpj document number, when call with, should return error") {
         // given
         val expectedErrorMessage = "'cnpj' should not be empty"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Account.with(
                     anAccountId = expectedId,
                     version = expectedVersion,
@@ -358,23 +347,22 @@ class AccountTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given an invalid cnpj document number, when call with, should return error`() {
+    test("given an invalid cnpj document number, when call with, should return error") {
         // given
         val expectedErrorMessage = "'cnpj' is invalid"
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedAddress = Fixture.Person.fullAddress()
 
         // when
         val actualError =
-            assertThrows<DomainException> {
+            shouldThrow<DomainException> {
                 Account.with(
                     anAccountId = expectedId,
                     version = expectedVersion,
@@ -387,15 +375,14 @@ class AccountTest : UnitTest {
             }
 
         // then
-        assertEquals(expectedErrorMessage, actualError.message)
+        actualError.message shouldBe expectedErrorMessage
     }
 
-    @Test
-    fun `given valid account, when calls execute with profile command, should update name and address`() {
+    test("given valid account, when calls execute with profile command, should update name and address") {
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email("john@gmail.com")
         val expectedDocument = Fixture.Person.document()
@@ -417,22 +404,21 @@ class AccountTest : UnitTest {
 
         // then
         with(actualAccount) {
-            assertEquals(expectedId, id)
-            assertEquals(expectedVersion, version)
-            assertEquals(expectedUserId, userId)
-            assertEquals(expectedName, name)
-            assertEquals(expectedEmail, email)
-            assertEquals(expectedDocument, document)
-            assertEquals(expectedEventsCount, domainEvents.size)
+            id shouldBe expectedId
+            version shouldBe expectedVersion
+            userId shouldBe expectedUserId
+            name shouldBe expectedName
+            email shouldBe expectedEmail
+            document shouldBe expectedDocument
+            domainEvents.size shouldBe expectedEventsCount
         }
     }
 
-    @Test
-    fun `given valid account, when calls execute with email command, should update email`() {
+    test("given valid account, when calls execute with email command, should update email") {
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email(Fixture.Person.email())
         val expectedDocument = Fixture.Person.document()
@@ -452,21 +438,20 @@ class AccountTest : UnitTest {
 
         // then
         with(actualAccount) {
-            assertEquals(expectedId, id)
-            assertEquals(expectedVersion, version)
-            assertEquals(expectedUserId, userId)
-            assertEquals(expectedName, name)
-            assertEquals(expectedEmail, email)
-            assertEquals(expectedDocument, document)
+            id shouldBe expectedId
+            version shouldBe expectedVersion
+            userId shouldBe expectedUserId
+            name shouldBe expectedName
+            email shouldBe expectedEmail
+            document shouldBe expectedDocument
         }
     }
 
-    @Test
-    fun `given valid account, when calls execute with document command, should update document`() {
+    test("given valid account, when calls execute with document command, should update document") {
         // given
         val expectedId = AccountId(IdUtils.uuid())
         val expectedVersion = 1
-        val expectedUserId = UserId(" USER-123")
+        val expectedUserId = UserId.from("USER-123")
         val expectedName = Fixture.Person.fullName()
         val expectedEmail = Email(Fixture.Person.email())
         val expectedDocument = Fixture.Person.document()
@@ -486,12 +471,12 @@ class AccountTest : UnitTest {
 
         // then
         with(actualAccount) {
-            assertEquals(expectedId, id)
-            assertEquals(expectedVersion, version)
-            assertEquals(expectedUserId, userId)
-            assertEquals(expectedName, name)
-            assertEquals(expectedEmail, email)
-            assertEquals(expectedDocument, document)
+            id shouldBe expectedId
+            version shouldBe expectedVersion
+            userId shouldBe expectedUserId
+            name shouldBe expectedName
+            email shouldBe expectedEmail
+            document shouldBe expectedDocument
         }
     }
-}
+})

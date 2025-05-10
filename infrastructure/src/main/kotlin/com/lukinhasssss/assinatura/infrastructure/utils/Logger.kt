@@ -1,6 +1,6 @@
 package com.lukinhasssss.assinatura.infrastructure.utils
 
-import com.lukinhasssss.assinatura.infrastructure.configuration.json.Json
+import com.lukinhasssss.assinatura.infrastructure.json.Json
 import org.slf4j.LoggerFactory
 
 object Logger {

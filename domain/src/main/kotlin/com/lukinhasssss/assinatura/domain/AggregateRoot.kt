@@ -1,6 +1,4 @@
-package com.lukinhasssss.admin.catalogo.domain
-
-import com.lukinhasssss.admin.catalogo.domain.event.DomainEvent
+package com.lukinhasssss.assinatura.domain
 
 abstract class AggregateRoot<ID : Identifier>(
     id: ID,

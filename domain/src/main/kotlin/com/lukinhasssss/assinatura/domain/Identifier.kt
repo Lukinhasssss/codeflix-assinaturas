@@ -1,4 +1,4 @@
-package com.lukinhasssss.admin.catalogo.domain
+package com.lukinhasssss.assinatura.domain
 
 interface Identifier : ValueObject {
     val value: String
