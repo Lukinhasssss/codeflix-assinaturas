@@ -71,12 +71,20 @@ object Fixture {
 
     object Accounts {
         fun john() =
-            Account.newAccount(
+            Account.with(
+                version = 1,
                 anAccountId = AccountId("ACC-123"),
                 anUserId = UserId.from("USER-123"),
                 aName = Person.fullName(),
                 anEmail = Person.emailClass(),
                 aDocument = Person.document(),
+                billingAddress =
+                    Address(
+                        zipCode = Person.zipCode(),
+                        number = Person.buildingNumber(),
+                        complement = Person.complement(),
+                        country = Person.country(),
+                    ),
             )
     }
 
